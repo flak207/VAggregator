@@ -94,5 +94,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KEA.VAggregator.StdLib\KEA.VAggregator.StdLib.csproj">
+      <Project>{41b5b8f7-26f6-422c-a33d-0d02009eb309}</Project>
+      <Name>KEA.VAggregator.StdLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
