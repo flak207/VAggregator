@@ -3,8 +3,8 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-using KEA.VAggregator.Models;
 using KEA.VAggregator.ViewModels;
+using KEA.VAggregator.StdLib.Models;
 
 namespace KEA.VAggregator.Views
 {

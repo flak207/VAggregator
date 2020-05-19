@@ -1,6 +1,6 @@
 ﻿using System;
 
-using KEA.VAggregator.Models;
+using KEA.VAggregator.StdLib.Models;
 
 namespace KEA.VAggregator.ViewModels
 {

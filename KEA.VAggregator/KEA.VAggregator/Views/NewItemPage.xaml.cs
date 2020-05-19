@@ -1,10 +1,9 @@
-﻿using System;
+﻿using KEA.VAggregator.StdLib.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
-using KEA.VAggregator.Models;
 
 namespace KEA.VAggregator.Views
 {

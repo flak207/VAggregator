@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-using KEA.VAggregator.Models;
 using KEA.VAggregator.Views;
 using KEA.VAggregator.ViewModels;
+using KEA.VAggregator.StdLib.Models;
+using KEA.VAggregator.StdLib.Services;
 
 namespace KEA.VAggregator.Views
 {
@@ -19,6 +20,7 @@ namespace KEA.VAggregator.Views
     public partial class ItemsPage : ContentPage
     {
         ItemsViewModel viewModel;
+        private readonly IVideoService _videoService = new TestVideoService();
 
         public ItemsPage()
         {
@@ -45,6 +47,19 @@ namespace KEA.VAggregator.Views
 
             if (viewModel.Items.Count == 0)
                 viewModel.IsBusy = true;
+
+            var categories = _videoService.GetCategories();
+            foreach (var category in categories)
+            {
+                Image image = new Image()
+                {
+                    Source = category.ImageUrl, 
+                    Aspect = Aspect.AspectFill,
+                    WidthRequest = 200,
+                    HeightRequest = 100
+                };
+                (categoryPanel.Children as ICollection<View>).Add(image);
+            }
         }
     }
 }

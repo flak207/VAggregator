@@ -5,8 +5,8 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
 
-using KEA.VAggregator.Models;
 using KEA.VAggregator.Services;
+using KEA.VAggregator.StdLib.Models;
 
 namespace KEA.VAggregator.ViewModels
 {

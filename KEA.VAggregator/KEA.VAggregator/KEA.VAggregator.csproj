@@ -18,4 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\KEA.VAggregator.StdLib\KEA.VAggregator.StdLib.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

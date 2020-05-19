@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KEA.VAggregator.StdLib.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace KEA.VAggregator.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IVideoService _videoService = new TestVideoService();
+
         public MainWindow()
         {
             InitializeComponent();
+            var categories = _videoService.GetCategories();
+            categoryPanel.ItemsSource = categories;
         }
     }
 }

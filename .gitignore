@@ -338,3 +338,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/KEA.VAggregator.StdLib/Services/TestVideoService.cs
