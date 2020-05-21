@@ -6,5 +6,6 @@ namespace KEA.VAggregator.StdLib.Models
 {
     public class Video : WebItem
     {
+        public string PlayUrl { get; set; }
     }
 }

@@ -26,11 +26,11 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical" Margin="5">
-                        <Border Height="200" Width="350" BorderThickness="2" BorderBrush="Black">
-                            <Image Height="200" Width="350" Source="{Binding ImageUrl}" />
+                    <StackPanel Orientation="Vertical">
+                        <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
+                            <Image Height="148" Width="261" Source="{Binding ImageUrl}" />
                         </Border>
-                        <TextBlock Margin="0,3" Width="350" FontWeight="Bold" HorizontalAlignment="Stretch" Text="{Binding Name}"
+                        <TextBlock Margin="0,3" Width="261" FontWeight="Bold" HorizontalAlignment="Stretch" Text="{Binding Name}"
                                    TextAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
                     </StackPanel>
                 </DataTemplate>

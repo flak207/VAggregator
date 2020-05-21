@@ -43,8 +43,8 @@ namespace KEA.VAggregator.WPF
                     videoWindow.Show();
 
                     Video video = selectedItem as Video;
-                    string videoUrl = _videoService.GetVideoUrl(video);
-                    videoWindow.PlayVideo(videoUrl);
+                    video.PlayUrl = _videoService.GetVideoUrl(video);
+                    videoWindow.PlayVideo(video);
                 }
                 else
                 {

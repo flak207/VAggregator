@@ -3,19 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:KEA.VAggregator.WPF"
         Title="Video" Height="450" Width="800" Icon="Resources/vag_icon_green.ico">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="55"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <MediaElement LoadedBehavior="Manual" Name="mePlayer" />
-        <StackPanel Grid.Row="1">
-            <Label Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
-            <WrapPanel HorizontalAlignment="Center">
-                <Button Name="btnPlay" Click="btnPlay_Click">Play</Button>
-                <Button Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
-                <Button Name="btnStop" Click="btnStop_Click">Stop</Button>
-            </WrapPanel>
+        <StackPanel x:Name="mainPanel" Grid.Row="0" Panel.ZIndex="1000" VerticalAlignment="Bottom" Height="54" 
+                    MouseEnter="mainPanel_MouseEnter" MouseLeave="mainPanel_MouseLeave" Background="Transparent">
+            <StackPanel x:Name="controlsPanel">
+                <WrapPanel HorizontalAlignment="Center">
+                    <Label x:Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
+                    <Button x:Name="btnPlay" Click="btnPlay_Click">Play</Button>
+                    <Button x:Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
+                    <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full Screen</Button>
+                    <Button x:Name="btnMute" Margin="5,0" Click="btnMute_Click">Mute</Button>
+                </WrapPanel>
+                <Slider x:Name="videoSlider" ValueChanged="videoSlider_ValueChanged" Maximum="100" Margin="5,0"></Slider>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
