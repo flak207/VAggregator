@@ -1,4 +1,5 @@
-﻿using KEA.VAggregator.StdLib.Services;
+﻿using KEA.VAggregator.StdLib.Models;
+using KEA.VAggregator.StdLib.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,25 @@ namespace KEA.VAggregator.WPF
         public MainWindow()
         {
             InitializeComponent();
-            var categories = _videoService.GetCategories();
-            categoryPanel.ItemsSource = categories;
+            var categories = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
+            wrapPanel.ItemsSource = categories;
+        }
+
+        private void wrapPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Item selectedItem = wrapPanel.SelectedItem as Item;
+            if (selectedItem != null)
+            {
+                if (selectedItem is Video)
+                {
+                    VideoWindow videoWindow = new VideoWindow() { Owner = this };
+                    videoWindow.Show();
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 }
