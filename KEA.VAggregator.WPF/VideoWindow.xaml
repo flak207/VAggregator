@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:KEA.VAggregator.WPF"
-        Title="Video" Height="450" Width="800" Icon="Resources/vag_icon_green.ico">
+        Title="Video" Height="450" Width="800" 
+        WindowStartupLocation="CenterOwner" Icon="Resources/vag_icon_green.ico" >
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="MinWidth" Value="55"/>
@@ -16,7 +17,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <MediaElement LoadedBehavior="Manual" Name="mePlayer" />
+        <MediaElement LoadedBehavior="Manual" Name="mePlayer" Stretch="UniformToFill" />
         <StackPanel x:Name="mainPanel" Grid.Row="0" Panel.ZIndex="1000" VerticalAlignment="Bottom" Height="54" 
                     MouseEnter="mainPanel_MouseEnter" MouseLeave="mainPanel_MouseLeave" Background="Transparent">
             <StackPanel x:Name="controlsPanel">
