@@ -33,7 +33,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10">
-                        <Label Text="{Binding Text}" 
+                        <Label Text="{Binding Name}" 
                                 d:Text="{Binding .}"
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 

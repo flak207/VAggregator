@@ -28,7 +28,7 @@ namespace KEA.VAggregator.Views
 
             var item = new Item
             {
-                Text = "Item 1",
+                Name = "Item 1",
                 Description = "This is an item description."
             };
 

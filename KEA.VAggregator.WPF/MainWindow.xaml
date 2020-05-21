@@ -16,7 +16,7 @@
                         <Border Height="200" Width="350" BorderThickness="2" BorderBrush="Black">
                             <Image Height="200" Width="350" Source="{Binding ImageUrl}" />
                         </Border>
-                        <Label Content="{Binding Text}" HorizontalAlignment="Center"></Label>
+                        <Label Content="{Binding Name}" HorizontalAlignment="Center"></Label>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

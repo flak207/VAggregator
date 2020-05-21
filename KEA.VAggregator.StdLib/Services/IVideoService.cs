@@ -8,5 +8,7 @@ namespace KEA.VAggregator.StdLib.Services
     public interface IVideoService
     {
         IEnumerable<Category> GetCategories();
+
+        IEnumerable<Video> GetVideos(Category category = null);
     }
 }
