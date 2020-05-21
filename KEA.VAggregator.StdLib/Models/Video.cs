@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KEA.VAggregator.StdLib.Models
 {
-    public class Video : Item
+    public class Video : WebItem
     {
     }
 }

@@ -10,5 +10,7 @@ namespace KEA.VAggregator.StdLib.Services
         IEnumerable<Category> GetCategories();
 
         IEnumerable<Video> GetVideos(Category category = null);
+
+        string GetVideoUrl(Video video);
     }
 }

@@ -27,19 +27,24 @@ namespace KEA.VAggregator.WPF
         public MainWindow()
         {
             InitializeComponent();
-            var categories = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
-            wrapPanel.ItemsSource = categories;
+
+            var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
+            wrapPanel.ItemsSource = items;
         }
 
         private void wrapPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Item selectedItem = wrapPanel.SelectedItem as Item;
+            WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
             if (selectedItem != null)
             {
                 if (selectedItem is Video)
                 {
                     VideoWindow videoWindow = new VideoWindow() { Owner = this };
                     videoWindow.Show();
+
+                    Video video = selectedItem as Video;
+                    string videoUrl = _videoService.GetVideoUrl(video);
+                    videoWindow.PlayVideo(videoUrl);
                 }
                 else
                 {
