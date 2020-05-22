@@ -339,3 +339,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /KEA.VAggregator.StdLib/Services/TestVideoService.cs
+/VRServer/video/1126414_1440p.mp4
+/VRWebClient/video/1126414_1440p.mp4
+/VRWebClient
