@@ -21,6 +21,9 @@ namespace KEA.VAggregator.WPF
     /// </summary>
     public partial class VideoWindow : Window
     {
+        private bool _sliderMouseDown = false;
+        private MediaState _mediaState = MediaState.Play;
+
         public VideoWindow()
         {
             InitializeComponent();
@@ -29,13 +32,6 @@ namespace KEA.VAggregator.WPF
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
-
-            mePlayer.MediaOpened += MePlayer_MediaOpened;
-        }
-
-        private void MePlayer_MediaOpened(object sender, RoutedEventArgs e)
-        {
-
         }
 
         public void PlayVideo(Video video)
@@ -44,43 +40,40 @@ namespace KEA.VAggregator.WPF
             {
                 this.Title = video.Name;
                 mePlayer.Source = new Uri(video?.PlayUrl);
+                mePlayer.IsMuted = true;
                 mePlayer.Play();
+                _mediaState = MediaState.Play;
             }
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (mePlayer.Source != null)
-            {
-                if (mePlayer.NaturalDuration.HasTimeSpan)
-                    lblStatus.Content = String.Format("{0} / {1}", mePlayer.Position.ToString(@"mm\:ss"),
-                        mePlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
-            }
-            else
-                lblStatus.Content = "No file selected...";
-        }
-
-        private void btnPlay_Click(object sender, RoutedEventArgs e)
-        {
-            mePlayer.Play();
-        }
-
-        private void btnPause_Click(object sender, RoutedEventArgs e)
-        {
-            mePlayer.Pause();
-        }
-
-        private void btnStop_Click(object sender, RoutedEventArgs e)
-        {
-            mePlayer.Stop();
-        }
-
-        private void videoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
             if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
             {
-                var targetPosition = Convert.ToInt32(mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds * videoSlider.Value / 100);
-                mePlayer.Position = new TimeSpan(0, 0, 0, 0, targetPosition);
+                if (!_sliderMouseDown)
+                    videoSlider.Value = mePlayer.Position.TotalMilliseconds * 100 / mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds;
+                //lblStatus.Text = $"{mePlayer.Position:mm\\:ss} / {mePlayer.NaturalDuration.TimeSpan:mm\\:ss}";
+                var position = mePlayer.Position;
+                var duration = mePlayer.NaturalDuration.TimeSpan;
+                lblStatus.Text = $"{position.TotalMinutes:00}:{position.Seconds:00} / {duration.TotalMinutes:00}:{duration.Seconds:00}";
+            }
+            else
+                lblStatus.Text = "00:00 / 00:00";
+        }
+
+        private void btnTogglePlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (_mediaState == MediaState.Play)
+            {
+                _mediaState = MediaState.Pause;
+                mePlayer.Pause();
+                btnTogglePlay.Content = "Play";
+            }
+            else
+            {
+                _mediaState = MediaState.Play;
+                mePlayer.Play();
+                btnTogglePlay.Content = "Pause";
             }
         }
 
@@ -91,7 +84,7 @@ namespace KEA.VAggregator.WPF
                 this.WindowStyle = WindowStyle.SingleBorderWindow;
                 this.WindowState = WindowState.Normal;
                 this.Topmost = false;
-                btnToggleScreen.Content = "Full Screen";
+                btnToggleScreen.Content = "Full";
             }
             else
             {
@@ -99,7 +92,7 @@ namespace KEA.VAggregator.WPF
                 this.WindowStyle = WindowStyle.None;
                 this.WindowState = WindowState.Maximized;
                 this.Topmost = true;
-                btnToggleScreen.Content = "Normal Screen";
+                btnToggleScreen.Content = "Normal";
             }
         }
 
@@ -109,8 +102,6 @@ namespace KEA.VAggregator.WPF
             btnMute.Content = mePlayer.IsMuted ? "Unmute" : "Mute";
         }
 
-      
-
         private void mainPanel_MouseEnter(object sender, MouseEventArgs e)
         {
             controlsPanel.Visibility = Visibility.Visible;
@@ -119,6 +110,56 @@ namespace KEA.VAggregator.WPF
         private void mainPanel_MouseLeave(object sender, MouseEventArgs e)
         {
             controlsPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void videoSlider_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _sliderMouseDown = true;
+        }
+
+        private void videoSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _sliderMouseDown = false;
+            if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
+            {
+                var targetPosition = Convert.ToInt32(mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds * videoSlider.Value / 100);
+                mePlayer.Position = new TimeSpan(0, 0, 0, 0, targetPosition);
+            }
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
+            {
+                switch (e.Key)
+                {
+                    case Key.Space:
+                        btnTogglePlay_Click(sender, e);
+                        break;
+                    case Key.Left:
+                        mePlayer.Position = new TimeSpan(mePlayer.Position.Ticks).Subtract(new TimeSpan(0, 0, 5));
+                        break;
+                    case Key.Right:
+                        mePlayer.Position = new TimeSpan(mePlayer.Position.Ticks).Add(new TimeSpan(0, 0, 5));
+                        break;
+                    case Key.Up:
+                        mePlayer.SpeedRatio += 0.1;
+                        break;
+                    case Key.Down:
+                        if (mePlayer.SpeedRatio > 0)
+                            mePlayer.SpeedRatio -= 0.1;
+                        break;
+                    case Key.Enter:
+                        btnToggleScreen_Click(sender, e);
+                        break;
+                    case Key.Escape:
+                        this.WindowStyle = WindowStyle.None;
+                        btnToggleScreen_Click(sender, e);
+                        mePlayer.SpeedRatio = 1;
+                        break;
+                }
+
+            }
         }
     }
 }

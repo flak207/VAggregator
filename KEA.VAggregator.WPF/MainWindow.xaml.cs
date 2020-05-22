@@ -39,7 +39,7 @@ namespace KEA.VAggregator.WPF
             {
                 if (selectedItem is Video)
                 {
-                    VideoWindow videoWindow = new VideoWindow() { Owner = this };
+                    VideoWindow videoWindow = new VideoWindow(); // { Owner = this };
                     videoWindow.Show();
 
                     Video video = selectedItem as Video;
@@ -51,6 +51,18 @@ namespace KEA.VAggregator.WPF
 
                 }
             }
+        }
+
+        private void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            var items = _videoService.SearchVideos(searchInput.Text);
+            wrapPanel.ItemsSource = items;
+        }
+
+        private void searchInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                searchButton_Click(sender, e);
         }
     }
 }

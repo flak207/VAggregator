@@ -3,13 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:KEA.VAggregator.WPF"
         Title="Video" Height="450" Width="800" 
-        WindowStartupLocation="CenterOwner" Icon="Resources/vag_icon_green.ico" >
+        WindowStartupLocation="CenterOwner" Icon="Resources/vag_icon_green.ico" 
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="MinWidth" Value="55"/>
+            <Setter Property="MinWidth" Value="50"/>
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="Padding" Value="5,0"/>
-            <Setter Property="Height" Value="25"/>
+            <Setter Property="Height" Value="23"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Opacity" Value="0.8"/>
+            <!--<Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>-->
         </Style>
     </Window.Resources>
     <Grid>
@@ -17,18 +22,19 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <MediaElement LoadedBehavior="Manual" Name="mePlayer" Stretch="UniformToFill" />
-        <StackPanel x:Name="mainPanel" Grid.Row="0" Panel.ZIndex="1000" VerticalAlignment="Bottom" Height="54" 
+        <MediaElement LoadedBehavior="Manual" Name="mePlayer" Stretch="Fill" ScrubbingEnabled="True"/>
+        <StackPanel x:Name="mainPanel" Grid.Row="0" Panel.ZIndex="1000" VerticalAlignment="Bottom" Height="59" 
                     MouseEnter="mainPanel_MouseEnter" MouseLeave="mainPanel_MouseLeave" Background="Transparent">
-            <StackPanel x:Name="controlsPanel">
+            <StackPanel x:Name="controlsPanel" Margin="0,10,0,0">
                 <WrapPanel HorizontalAlignment="Center">
-                    <Label x:Name="lblStatus" Content="Not playing..." HorizontalContentAlignment="Center" Margin="5" />
-                    <Button x:Name="btnPlay" Click="btnPlay_Click">Play</Button>
-                    <Button x:Name="btnPause" Margin="5,0" Click="btnPause_Click">Pause</Button>
-                    <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full Screen</Button>
+                    <Button x:Name="btnTogglePlay" Margin="5,0" Click="btnTogglePlay_Click">Pause</Button>
+                    <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full</Button>
                     <Button x:Name="btnMute" Margin="5,0" Click="btnMute_Click">Mute</Button>
+                    <TextBlock x:Name="lblStatus" Padding="4,0" Foreground="Black" Width="Auto" Height="17" Text="00:00 / 00:00"
+                           TextAlignment="Center" Margin="5" Background="#FFDDDDDD" Opacity="0.8" VerticalAlignment="Center"/>
                 </WrapPanel>
-                <Slider x:Name="videoSlider" ValueChanged="videoSlider_ValueChanged" Maximum="100" Margin="5,0"></Slider>
+                <Slider x:Name="videoSlider" Maximum="100" Margin="5,0"
+                        PreviewMouseDown="videoSlider_PreviewMouseDown" PreviewMouseUp="videoSlider_PreviewMouseUp"/>
             </StackPanel>
         </StackPanel>
     </Grid>
