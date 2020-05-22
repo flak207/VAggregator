@@ -30,10 +30,12 @@
                     <Button x:Name="btnTogglePlay" Margin="5,0" Click="btnTogglePlay_Click">Pause</Button>
                     <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full</Button>
                     <Button x:Name="btnMute" Margin="5,0" Click="btnMute_Click">Mute</Button>
+                    <ComboBox x:Name="cmbQuality" SelectionChanged="cmbQuality_SelectionChanged" Width="Auto" Height="23" 
+                              BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50"/>
                     <TextBlock x:Name="lblStatus" Padding="4,0" Foreground="Black" Width="Auto" Height="17" Text="00:00 / 00:00"
                            TextAlignment="Center" Margin="5" Background="#FFDDDDDD" Opacity="0.8" VerticalAlignment="Center"/>
                 </WrapPanel>
-                <Slider x:Name="videoSlider" Maximum="100" Margin="5,0"
+                <Slider x:Name="videoSlider" Maximum="100" Margin="5,2,5,0"
                         PreviewMouseDown="videoSlider_PreviewMouseDown" PreviewMouseUp="videoSlider_PreviewMouseUp"/>
             </StackPanel>
         </StackPanel>

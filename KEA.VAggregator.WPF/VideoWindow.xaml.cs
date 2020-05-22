@@ -23,6 +23,7 @@ namespace KEA.VAggregator.WPF
     {
         private bool _sliderMouseDown = false;
         private MediaState _mediaState = MediaState.Play;
+        private Video _video = null;
 
         public VideoWindow()
         {
@@ -38,8 +39,12 @@ namespace KEA.VAggregator.WPF
         {
             if (!string.IsNullOrWhiteSpace(video?.PlayUrl))
             {
-                this.Title = video.Name;
-                mePlayer.Source = new Uri(video?.PlayUrl);
+                _video = video;
+                this.Title = _video.Name;
+                cmbQuality.ItemsSource = _video.QualityUrls.Keys.ToList();
+                cmbQuality.SelectedItem = _video.QualityUrls.Keys.FirstOrDefault(k => _video.QualityUrls[k] == _video?.PlayUrl);
+
+                mePlayer.Source = new Uri(_video?.PlayUrl);
                 mePlayer.IsMuted = true;
                 mePlayer.Play();
                 _mediaState = MediaState.Play;
@@ -159,6 +164,16 @@ namespace KEA.VAggregator.WPF
                         break;
                 }
 
+            }
+        }
+
+        private void cmbQuality_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
+            {
+                var position = mePlayer.Position;
+                mePlayer.Source = new Uri(_video?.QualityUrls[cmbQuality.SelectedItem?.ToString()]);
+                mePlayer.Position = position;
             }
         }
     }

@@ -13,6 +13,10 @@ namespace KEA.VAggregator.StdLib.Services
 
         IEnumerable<Video> SearchVideos(string text);
 
-        string GetVideoUrl(Video video);
+        string GetVideoPlayUrl(Video video);
+
+        Dictionary<string, string> GetVideoQualityUrls(Video video);
+
+        void FillVideoPlayAndQualityUrls(Video video);
     }
 }
