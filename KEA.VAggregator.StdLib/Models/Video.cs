@@ -9,5 +9,9 @@ namespace KEA.VAggregator.StdLib.Models
         public string PlayUrl { get; set; }
 
         public Dictionary<string, string> QualityUrls { get; set; }
+
+        public string Quality { get; set; }
+
+        public string Duration { get; set; }
     }
 }

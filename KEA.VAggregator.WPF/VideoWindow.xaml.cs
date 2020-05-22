@@ -1,6 +1,7 @@
 ﻿using KEA.VAggregator.StdLib.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -169,11 +170,27 @@ namespace KEA.VAggregator.WPF
 
         private void cmbQuality_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
+            //if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
             {
                 var position = mePlayer.Position;
                 mePlayer.Source = new Uri(_video?.QualityUrls[cmbQuality.SelectedItem?.ToString()]);
                 mePlayer.Position = position;
+            }
+        }
+
+        private void btnBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            if (mePlayer.Source != null)
+            {
+                try
+                {
+                    var url = mePlayer.Source.OriginalString.Replace(mePlayer.Source.Query, "");
+                    Process.Start(url);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex); ;
+                }
             }
         }
     }

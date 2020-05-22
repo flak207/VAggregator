@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:KEA.VAggregator.WPF"
-        Title="VAggregator" Height="609" Width="850"
+        Title="VAggregator" Height="617" Width="850"
         WindowStartupLocation="CenterScreen" Icon="Resources/vag_icon.ico">
     <Grid>
         <Grid.RowDefinitions>
@@ -28,12 +28,25 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
-                            <Image Height="148" Width="261" Source="{Binding ImageUrl}" />
-                        </Border>
-                        <TextBlock Margin="0,3" Width="261" FontWeight="Bold" HorizontalAlignment="Stretch" Text="{Binding Name}"
-                                   TextAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                    <StackPanel x:Name="itemPanel" Orientation="Vertical" MouseLeftButtonDown="itemPanel_MouseLeftButtonDown">
+                        <Grid>
+                            <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
+                                <Image Height="148" Width="261" Source="{Binding ImageUrl}" />
+                            </Border>
+                            <TextBlock Text="{Binding Quality}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Opacity="0.6"/>
+                            <TextBlock Text="{Binding Duration}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
+                                       HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Black" Opacity="0.6"/>
+                        </Grid>
+                        <TextBlock Margin="0,1,0,4" Width="261" HorizontalAlignment="Stretch"
+                                   Text="{Binding Name}" ToolTip="{Binding Name}" FontSize="14"
+                                   TextAlignment="Center" TextTrimming="CharacterEllipsis">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem x:Name="miCopyName" Tag="{Binding Name}" Click="miCopyName_Click" Header="Copy Name"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -37,6 +37,37 @@ namespace KEA.VAggregator.WPF
             WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
             if (selectedItem != null)
             {
+                searchInput.Text = selectedItem.Name;
+            }
+        }
+
+        private void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            var items = _videoService.SearchVideos(searchInput.Text);
+            wrapPanel.ItemsSource = items;
+        }
+
+        private void searchInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                searchButton_Click(sender, e);
+        }
+
+        private void miCopyName_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            Item item = menuItem?.DataContext as Item;
+            if (item != null)
+            {
+                Clipboard.SetText(item.Name, TextDataFormat.Text);
+            }
+        }
+
+        private void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
+            if (selectedItem != null && e.ClickCount > 1)
+            {
                 if (selectedItem is Video)
                 {
                     VideoWindow videoWindow = new VideoWindow(); // { Owner = this };
@@ -52,18 +83,6 @@ namespace KEA.VAggregator.WPF
 
                 }
             }
-        }
-
-        private void searchButton_Click(object sender, RoutedEventArgs e)
-        {
-            var items = _videoService.SearchVideos(searchInput.Text);
-            wrapPanel.ItemsSource = items;
-        }
-
-        private void searchInput_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                searchButton_Click(sender, e);
         }
     }
 }

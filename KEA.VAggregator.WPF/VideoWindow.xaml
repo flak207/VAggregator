@@ -13,6 +13,7 @@
             <Setter Property="Height" Value="23"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Opacity" Value="0.8"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
             <!--<Setter Property="Background" Value="Gray"/>
             <Setter Property="Foreground" Value="White"/>-->
         </Style>
@@ -23,19 +24,20 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <MediaElement LoadedBehavior="Manual" Name="mePlayer" Stretch="Fill" ScrubbingEnabled="True"/>
-        <StackPanel x:Name="mainPanel" Grid.Row="0" Panel.ZIndex="1000" VerticalAlignment="Bottom" Height="59" 
+        <StackPanel x:Name="mainPanel" Grid.Row="0" Panel.ZIndex="1000" VerticalAlignment="Bottom" Height="69" 
                     MouseEnter="mainPanel_MouseEnter" MouseLeave="mainPanel_MouseLeave" Background="Transparent">
             <StackPanel x:Name="controlsPanel" Margin="0,10,0,0">
                 <WrapPanel HorizontalAlignment="Center">
-                    <Button x:Name="btnTogglePlay" Margin="5,0" Click="btnTogglePlay_Click">Pause</Button>
+                    <Button x:Name="btnTogglePlay" Click="btnTogglePlay_Click">Pause</Button>
+                    <Button x:Name="btnMute" Click="btnMute_Click">Mute</Button>
+                    <Button x:Name="btnBrowser" Click="btnBrowser_Click">Browser</Button>
                     <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full</Button>
-                    <Button x:Name="btnMute" Margin="5,0" Click="btnMute_Click">Mute</Button>
                     <ComboBox x:Name="cmbQuality" SelectionChanged="cmbQuality_SelectionChanged" Width="Auto" Height="23" 
-                              BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50"/>
+                              BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50" Margin="5,0"/>
                     <TextBlock x:Name="lblStatus" Padding="4,0" Foreground="Black" Width="Auto" Height="17" Text="00:00 / 00:00"
                            TextAlignment="Center" Margin="5" Background="#FFDDDDDD" Opacity="0.8" VerticalAlignment="Center"/>
                 </WrapPanel>
-                <Slider x:Name="videoSlider" Maximum="100" Margin="5,2,5,0"
+                <Slider x:Name="videoSlider" Maximum="100" Margin="5,7,5,0"
                         PreviewMouseDown="videoSlider_PreviewMouseDown" PreviewMouseUp="videoSlider_PreviewMouseUp"/>
             </StackPanel>
         </StackPanel>
