@@ -30,8 +30,10 @@
                 <WrapPanel HorizontalAlignment="Center">
                     <Button x:Name="btnTogglePlay" Click="btnTogglePlay_Click">Pause</Button>
                     <Button x:Name="btnMute" Click="btnMute_Click">Mute</Button>
-                    <Button x:Name="btnBrowser" Click="btnBrowser_Click">Browser</Button>
+                    <!--<Button x:Name="btnBrowser" Click="btnBrowser_Click">Browser</Button>-->
                     <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full</Button>
+                    <Button x:Name="btnInfo" Click="btnInfo_Click">Info</Button>
+
                     <ComboBox x:Name="cmbQuality" SelectionChanged="cmbQuality_SelectionChanged" Width="Auto" Height="23" 
                               BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50" Margin="5,0"/>
                     <TextBlock x:Name="lblStatus" Padding="4,0" Foreground="Black" Width="Auto" Height="17" Text="00:00 / 00:00"

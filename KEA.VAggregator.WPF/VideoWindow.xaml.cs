@@ -25,6 +25,7 @@ namespace KEA.VAggregator.WPF
         private bool _sliderMouseDown = false;
         private MediaState _mediaState = MediaState.Play;
         private Video _video = null;
+        private InfoWindow _infoWindow = null;
 
         public VideoWindow()
         {
@@ -41,6 +42,7 @@ namespace KEA.VAggregator.WPF
             if (!string.IsNullOrWhiteSpace(video?.PlayUrl))
             {
                 _video = video;
+                _infoWindow = new InfoWindow(_video) { Owner = this };
                 this.Title = _video.Name;
                 cmbQuality.ItemsSource = _video.QualityUrls.Keys.ToList();
                 cmbQuality.SelectedItem = _video.QualityUrls.Keys.FirstOrDefault(k => _video.QualityUrls[k] == _video?.PlayUrl);
@@ -191,6 +193,15 @@ namespace KEA.VAggregator.WPF
                 {
                     Console.WriteLine(ex); ;
                 }
+            }
+        }
+
+        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if (_infoWindow != null)
+            {
+                _infoWindow.Show();
+                _infoWindow.Activate();
             }
         }
     }

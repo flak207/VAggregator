@@ -17,6 +17,6 @@ namespace KEA.VAggregator.StdLib.Services
 
         Dictionary<string, string> GetVideoQualityUrls(Video video);
 
-        void FillVideoPlayAndQualityUrls(Video video);
+        void FillVideoUrlsAndInfo(Video video);
     }
 }
