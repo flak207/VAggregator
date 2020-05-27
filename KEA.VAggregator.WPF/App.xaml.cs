@@ -33,6 +33,8 @@ namespace KEA.VAggregator.WPF
                 object objNullable = Activator.CreateInstance(typeNullable, objDS);
 
                 field.SetValue(null, objNullable);
+
+                this.ShutdownMode = ShutdownMode.OnMainWindowClose;
             }
             catch (Exception ex)
             {

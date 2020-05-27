@@ -31,7 +31,8 @@
                     <StackPanel x:Name="itemPanel" Orientation="Vertical" MouseLeftButtonDown="itemPanel_MouseLeftButtonDown">
                         <Grid>
                             <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
-                                <Image Height="148" Width="261" Source="{Binding ImageUrl}" />
+                                <Image Height="148" Width="261" Source="{Binding ImageUrl}" 
+                                       MouseEnter="previewImage_MouseEnter" MouseLeave="previewImage_MouseLeave"/>
                             </Border>
                             <TextBlock Text="{Binding Quality}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
                                        HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Opacity="0.6"/>

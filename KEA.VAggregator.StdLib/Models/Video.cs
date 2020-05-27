@@ -13,5 +13,7 @@ namespace KEA.VAggregator.StdLib.Models
         public string Quality { get; set; }
 
         public string Duration { get; set; }
+
+        public List<string> ScreenshotUrls { get; set; } = new List<string>();
     }
 }

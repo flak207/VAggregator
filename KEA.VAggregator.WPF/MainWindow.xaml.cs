@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace KEA.VAggregator.WPF
 {
@@ -23,10 +24,14 @@ namespace KEA.VAggregator.WPF
     public partial class MainWindow : Window
     {
         private readonly IVideoService _videoService = new TestVideoService();
+        private DispatcherTimer _screenshotTimer; // = new DispatcherTimer();
+
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _screenshotTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(700), DispatcherPriority.Normal, screenshotTimer_Tick, this.Dispatcher);
 
             var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
             wrapPanel.ItemsSource = items;
@@ -37,7 +42,7 @@ namespace KEA.VAggregator.WPF
             WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
             if (selectedItem != null)
             {
-                searchInput.Text = selectedItem.Name;
+                searchInput.Text = selectedItem.Name;              
             }
         }
 
@@ -82,6 +87,36 @@ namespace KEA.VAggregator.WPF
                 {
 
                 }
+            }
+        }
+
+        private void screenshotTimer_Tick(object sender, EventArgs e)
+        {
+            if (_screenshotTimer.Tag is Image image && image.DataContext is Video video 
+                && image.Tag is int index && video.ScreenshotUrls.Count > index)
+            {
+                image.Source = new BitmapImage(new Uri(video.ScreenshotUrls[index]));
+                int newIndex = index + 1;
+                image.Tag = newIndex >= video.ScreenshotUrls.Count ? 0 : newIndex;
+            }
+        }
+
+        private void previewImage_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Image image && image.DataContext is Video video && video.ScreenshotUrls.Count > 0)
+            {
+                image.Tag = image.Tag ?? (video.ScreenshotUrls[0].Contains(video.ImageUrl) ? 1 : 0);
+                _screenshotTimer.Tag = image;
+                _screenshotTimer.Start();
+            }
+        }
+
+        private void previewImage_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // if ((sender as Image).DataContext is Video video)
+            {
+                _screenshotTimer.Tag = null;
+                _screenshotTimer.Stop();
             }
         }
     }
