@@ -10,6 +10,9 @@
         </Grid.RowDefinitions>
         <TextBox x:Name="txtInfo" IsReadOnly="True" Margin="10" VerticalScrollBarVisibility="Auto" 
                  HorizontalScrollBarVisibility="Hidden" TextWrapping="Wrap"/>
+
+        <Button x:Name="btnRelatedVideos" Grid.Row="1" HorizontalAlignment="Left" Height="25" Margin="10,0,10,10" MinWidth="75" Padding="5,0" Click="btnRelatedVideos_Click">Related Videos</Button>
+
         <Button x:Name="btnClose" Grid.Row="1" HorizontalAlignment="Right" Height="25" Margin="0,0,10,10" Width="75" Click="btnClose_Click">Close</Button>
     </Grid>
 </Window>

@@ -21,10 +21,21 @@ namespace KEA.VAggregator.WPF
     /// </summary>
     public partial class InfoWindow : Window
     {
+        private Video _video = null;
+
         public InfoWindow(Video video)
         {
+            _video = video;
+
             InitializeComponent();
             txtInfo.Text = video?.Info + video.Description;
+        }
+
+        private void btnRelatedVideos_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow() { WindowStartupLocation = WindowStartupLocation.CenterScreen };
+            mainWindow.LoadVideos(_video.RelatedVideos);
+            mainWindow.Show();
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -38,5 +49,6 @@ namespace KEA.VAggregator.WPF
             this.Hide();
             //base.OnClosing(e);
         }
+
     }
 }

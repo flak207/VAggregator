@@ -26,15 +26,32 @@ namespace KEA.VAggregator.WPF
         private readonly IVideoService _videoService = new TestVideoService();
         private DispatcherTimer _screenshotTimer; // = new DispatcherTimer();
 
-
         public MainWindow()
         {
             InitializeComponent();
 
             _screenshotTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(700), DispatcherPriority.Normal, screenshotTimer_Tick, this.Dispatcher);
 
-            var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
-            wrapPanel.ItemsSource = items;
+
+            Loaded += MainWindow_Loaded;
+          
+        }
+
+        public void LoadVideos(IEnumerable<Video> videos)
+        {
+            if (videos != null)
+            {
+                wrapPanel.ItemsSource = videos;
+            }
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (wrapPanel.ItemsSource == null)
+            {
+                var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
+                wrapPanel.ItemsSource = items;
+            }
         }
 
         private void wrapPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
