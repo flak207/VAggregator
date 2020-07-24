@@ -11,7 +11,7 @@ namespace KEA.VAggregator.StdLib.Services
 
         IEnumerable<Video> GetVideos(Category category = null);
 
-        IEnumerable<Video> SearchVideos(string text);
+        IEnumerable<Video> SearchVideos(string text, VideoQuality videoQuality = VideoQuality.Unknown);
 
         string GetVideoPlayUrl(Video video);
 

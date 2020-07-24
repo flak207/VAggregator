@@ -2,18 +2,10 @@
 using KEA.VAggregator.StdLib.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace KEA.VAggregator.WPF
@@ -23,34 +15,46 @@ namespace KEA.VAggregator.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IVideoService _videoService = new TestVideoService();
-        private DispatcherTimer _screenshotTimer; // = new DispatcherTimer();
+        #region Fields
 
+        private readonly IVideoService _videoService = new TestVideoService();
+        private DispatcherTimer _screenshotTimer; // = new DispatcherTimer(); 
+        #endregion
+
+        #region Constructor
+        
         public MainWindow()
         {
             InitializeComponent();
 
             _screenshotTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(700), DispatcherPriority.Normal, screenshotTimer_Tick, this.Dispatcher);
-
-
             Loaded += MainWindow_Loaded;
-          
+        }
+        #endregion
+
+        #region Methods
+        
+        public void SearchVideos()
+        {
+            var items = _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem);
+            LoadVideos(items);
         }
 
         public void LoadVideos(IEnumerable<Video> videos)
         {
-            if (videos != null)
-            {
+            if (videos != null && wrapPanel != null)
                 wrapPanel.ItemsSource = videos;
-            }
         }
+        #endregion
 
+        #region Event Handlers
+        
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (wrapPanel.ItemsSource == null)
             {
                 var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
-                wrapPanel.ItemsSource = items;
+                LoadVideos(items);
             }
         }
 
@@ -58,21 +62,18 @@ namespace KEA.VAggregator.WPF
         {
             WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
             if (selectedItem != null)
-            {
-                searchInput.Text = selectedItem.Name;              
-            }
+                searchInput.Text = selectedItem.Name;
         }
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            var items = _videoService.SearchVideos(searchInput.Text);
-            wrapPanel.ItemsSource = items;
+            SearchVideos();
         }
 
         private void searchInput_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                searchButton_Click(sender, e);
+                SearchVideos();
         }
 
         private void miCopyName_Click(object sender, RoutedEventArgs e)
@@ -100,16 +101,12 @@ namespace KEA.VAggregator.WPF
                     //video.PlayUrl = _videoService.GetVideoUrl(video);
                     videoWindow.PlayVideo(video);
                 }
-                else
-                {
-
-                }
             }
         }
 
         private void screenshotTimer_Tick(object sender, EventArgs e)
         {
-            if (_screenshotTimer.Tag is Image image && image.DataContext is Video video 
+            if (_screenshotTimer.Tag is Image image && image.DataContext is Video video
                 && image.Tag is int index && video.ScreenshotUrls.Count > index)
             {
                 image.Source = new BitmapImage(new Uri(video.ScreenshotUrls[index]));
@@ -136,5 +133,12 @@ namespace KEA.VAggregator.WPF
                 _screenshotTimer.Stop();
             }
         }
+
+        private void cmbVideoQuality_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (wrapPanel != null)
+                SearchVideos();
+        } 
+        #endregion
     }
 }
