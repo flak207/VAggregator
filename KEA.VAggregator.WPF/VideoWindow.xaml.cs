@@ -48,7 +48,8 @@ namespace KEA.VAggregator.WPF
                 cmbQuality.SelectedItem = _video.QualityUrls.Keys.FirstOrDefault(k => _video.QualityUrls[k] == _video?.PlayUrl);
 
                 mePlayer.Source = new Uri(_video?.PlayUrl);
-                mePlayer.IsMuted = true;
+                //mePlayer.IsMuted = true;
+                mePlayer.Volume = 0;
                 mePlayer.Play();
                 _mediaState = MediaState.Play;
             }
@@ -187,7 +188,8 @@ namespace KEA.VAggregator.WPF
                 try
                 {
                     var url = mePlayer.Source.OriginalString.Replace(mePlayer.Source.Query, "");
-                    Process.Start(url);
+                    Process.Start(@"D:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
+                    //D://Program Files//DAUM//PotPlayer//PotPlayerMini64.exe
                 }
                 catch (Exception ex)
                 {
@@ -203,6 +205,11 @@ namespace KEA.VAggregator.WPF
                 _infoWindow.Show();
                 _infoWindow.Activate();
             }
+        }
+
+        private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            mePlayer.Volume = volumeSlider.Value / 100;
         }
     }
 }
