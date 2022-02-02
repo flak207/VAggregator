@@ -2,6 +2,7 @@
 using KEA.VAggregator.StdLib.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,7 +23,7 @@ namespace KEA.VAggregator.WPF
         #endregion
 
         #region Constructor
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,7 +34,7 @@ namespace KEA.VAggregator.WPF
         #endregion
 
         #region Methods
-        
+
         public void SearchVideos()
         {
             var items = _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem);
@@ -48,13 +49,17 @@ namespace KEA.VAggregator.WPF
         #endregion
 
         #region Event Handlers
-        
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (wrapPanel.ItemsSource == null)
             {
                 var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
                 LoadVideos(items);
+
+                var categories = _videoService.GetCategories();
+                categories = categories.OrderBy(c => c.Name);
+                categoriesList.ItemsSource = categories;
             }
         }
 
@@ -138,7 +143,18 @@ namespace KEA.VAggregator.WPF
         {
             if (wrapPanel != null)
                 SearchVideos();
-        } 
+        }
+
+        private void categoriesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Category category = categoriesList.SelectedItem as Category;
+            if (category != null)
+            {
+                var items = _videoService.GetVideos(category);
+                LoadVideos(items);
+            }
+        }
+
         #endregion
     }
 }

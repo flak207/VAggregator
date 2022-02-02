@@ -4,7 +4,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:KEA.VAggregator.StdLib.Models;assembly=KEA.VAggregator.StdLib"
         xmlns:convert="clr-namespace:KEA.VAggregator.WPF.Converters"
-        Title="VAggregator" Height="617" Width="850"
+        Title="VAggregator" Height="617" Width="999"
         WindowStartupLocation="CenterScreen" Icon="Resources/vag_icon.ico">
     <Window.Resources>
         <convert:VideoQualityConverter x:Key="videoQualityConverter"/>
@@ -17,7 +17,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="rootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -43,39 +43,51 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
         </Grid>
-        <ListBox x:Name="wrapPanel" Grid.Row="1" 
+        <Grid x:Name="listGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="categoriesList" Grid.Column="0" FontSize="14" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      SelectionChanged="categoriesList_SelectionChanged">
+
+            </ListView>
+            <GridSplitter Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Right"></GridSplitter>
+            <ListBox x:Name="wrapPanel" Grid.Column="1"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                  SelectionChanged="wrapPanel_SelectionChanged">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel  />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel x:Name="itemPanel" Orientation="Vertical" MouseLeftButtonDown="itemPanel_MouseLeftButtonDown">
-                        <Grid>
-                            <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
-                                <Image Height="148" Width="261" Source="{Binding ImageUrl}" 
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel  />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel x:Name="itemPanel" Orientation="Vertical" MouseLeftButtonDown="itemPanel_MouseLeftButtonDown">
+                            <Grid>
+                                <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
+                                    <Image Height="148" Width="261" Source="{Binding ImageUrl}" 
                                        MouseEnter="previewImage_MouseEnter" MouseLeave="previewImage_MouseLeave"/>
-                            </Border>
-                            <TextBlock Text="{Binding Quality}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
+                                </Border>
+                                <TextBlock Text="{Binding Quality}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
                                        HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Opacity="0.6"/>
-                            <TextBlock Text="{Binding Duration}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
+                                <TextBlock Text="{Binding Duration}" Margin="3" Foreground="White" FontWeight="Bold" Padding="4, 2"
                                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Black" Opacity="0.6"/>
-                        </Grid>
-                        <TextBlock Margin="0,1,0,4" Width="261" HorizontalAlignment="Stretch"
+                            </Grid>
+                            <TextBlock Margin="0,1,0,4" Width="261" HorizontalAlignment="Stretch"
                                    Text="{Binding Name}" ToolTip="{Binding Name}" FontSize="14"
                                    TextAlignment="Center" TextTrimming="CharacterEllipsis">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem x:Name="miCopyName" Tag="{Binding Name}" Click="miCopyName_Click" Header="Copy Name"/>
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="miCopyName" Tag="{Binding Name}" Click="miCopyName_Click" Header="Copy Name"/>
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
 </Window>

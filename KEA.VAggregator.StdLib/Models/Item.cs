@@ -10,5 +10,10 @@ namespace KEA.VAggregator.StdLib.Models
 
         public string Description { get; set; }
 
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
     }
 }

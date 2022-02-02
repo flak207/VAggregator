@@ -188,7 +188,7 @@ namespace KEA.VAggregator.WPF
                 try
                 {
                     var url = mePlayer.Source.OriginalString.Replace(mePlayer.Source.Query, "");
-                    Process.Start(@"D:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
+                    Process.Start(@"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
                     //D://Program Files//DAUM//PotPlayer//PotPlayerMini64.exe
                 }
                 catch (Exception ex)
