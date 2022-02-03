@@ -22,6 +22,8 @@ namespace KEA.VAggregator.WPF
     /// </summary>
     public partial class VideoWindow : Window
     {
+        private const int VOLUME_DELTA = 4;
+
         private bool _sliderMouseDown = false;
         private MediaState _mediaState = MediaState.Play;
         private Video _video = null;
@@ -157,11 +159,12 @@ namespace KEA.VAggregator.WPF
                         mePlayer.Position = new TimeSpan(mePlayer.Position.Ticks).Add(new TimeSpan(0, 0, 5));
                         break;
                     case Key.Up:
-                        mePlayer.SpeedRatio += 0.1;
+                        double newVolumeValue = volumeSlider.Value + VOLUME_DELTA;
+                        volumeSlider.Value = newVolumeValue > 100 ? 100 : newVolumeValue;
                         break;
                     case Key.Down:
-                        if (mePlayer.SpeedRatio > 0)
-                            mePlayer.SpeedRatio -= 0.1;
+                        newVolumeValue = volumeSlider.Value - VOLUME_DELTA;
+                        volumeSlider.Value = newVolumeValue < 0 ? 0 : newVolumeValue;
                         break;
                     case Key.Enter:
                         btnToggleScreen_Click(sender, e);
@@ -169,6 +172,17 @@ namespace KEA.VAggregator.WPF
                     case Key.Escape:
                         this.WindowStyle = WindowStyle.None;
                         btnToggleScreen_Click(sender, e);
+                        mePlayer.SpeedRatio = 1;
+                        break;
+                    case Key.Z:
+                        if (mePlayer.SpeedRatio > 0)
+                            mePlayer.SpeedRatio -= 0.1;
+                        break;
+                    case Key.X:
+                        mePlayer.SpeedRatio += 0.1;
+                        break;
+                    case Key.C:
+                        //if (e.KeyboardDevice.Modifiers != ModifierKeys.Control)
                         mePlayer.SpeedRatio = 1;
                         break;
                 }
@@ -221,7 +235,7 @@ namespace KEA.VAggregator.WPF
         {
             if (e.Delta != 0)
             {
-                int delta = e.Delta > 0 ? 4 : -4;
+                int delta = e.Delta > 0 ? VOLUME_DELTA : -VOLUME_DELTA;
                 double newVolumeValue = volumeSlider.Value + delta;
                 if (newVolumeValue < 0)
                     newVolumeValue = 0;
@@ -229,7 +243,7 @@ namespace KEA.VAggregator.WPF
                     newVolumeValue = 100;
 
                 volumeSlider.Value = newVolumeValue;
-            }          
+            }
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
