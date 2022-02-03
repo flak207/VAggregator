@@ -4,7 +4,8 @@
         xmlns:local="clr-namespace:KEA.VAggregator.WPF"
         Title="Video" Height="450" Width="800" 
         WindowStartupLocation="CenterOwner" Icon="Resources/vag_icon_green.ico" 
-        PreviewKeyDown="Window_PreviewKeyDown">
+        PreviewKeyDown="Window_PreviewKeyDown" PreviewMouseWheel="Window_PreviewMouseWheel"
+        MouseDoubleClick="Window_MouseDoubleClick">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="MinWidth" Value="50"/>
@@ -31,18 +32,18 @@
                     <Button x:Name="btnTogglePlay" Click="btnTogglePlay_Click">Pause</Button>
                     <Button x:Name="btnMute" Click="btnMute_Click" Visibility="Collapsed">Mute</Button>
                     <Button x:Name="btnBrowser" Click="btnBrowser_Click">Browser</Button>
-                    <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click">Full</Button>
+                    <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click" Visibility="Collapsed">Full</Button>
                     <Button x:Name="btnInfo" Click="btnInfo_Click">Info</Button>
 
                     <ComboBox x:Name="cmbQuality" SelectionChanged="cmbQuality_SelectionChanged" Width="Auto" Height="23" 
-                              BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50" Margin="5,0" Visibility="Collapsed"/>
+                              BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50" Margin="5,0" />
                     
                     <Slider x:Name="volumeSlider" Width="100" VerticalAlignment="Center" ValueChanged="volumeSlider_ValueChanged" Maximum="100" SmallChange="1" LargeChange="10" ></Slider>
                     
                     <TextBlock x:Name="lblStatus" Padding="4,0" Foreground="Black" Width="Auto" Height="17" Text="00:00 / 00:00"
                            TextAlignment="Center" Margin="5" Background="#FFDDDDDD" Opacity="0.8" VerticalAlignment="Center"/>
                 </WrapPanel>
-                <Slider x:Name="videoSlider" Maximum="100" Margin="5,7,5,0"
+                <Slider x:Name="videoSlider" Minimum="0" Maximum="100" Margin="5,7,5,0"
                         PreviewMouseDown="videoSlider_PreviewMouseDown" PreviewMouseUp="videoSlider_PreviewMouseUp"/>
             </StackPanel>
         </StackPanel>

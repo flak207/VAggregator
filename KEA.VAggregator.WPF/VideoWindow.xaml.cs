@@ -131,7 +131,12 @@ namespace KEA.VAggregator.WPF
             _sliderMouseDown = false;
             if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
             {
-                var targetPosition = Convert.ToInt32(mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds * videoSlider.Value / 100);
+                Point clickPoint = e.GetPosition(videoSlider);
+                double sliderWidth = videoSlider.ActualWidth;
+                double relative = clickPoint.X / sliderWidth;
+                videoSlider.Value = relative * 100;
+
+                var targetPosition = Convert.ToInt32(mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds * relative);
                 mePlayer.Position = new TimeSpan(0, 0, 0, 0, targetPosition);
             }
         }
@@ -210,6 +215,26 @@ namespace KEA.VAggregator.WPF
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mePlayer.Volume = volumeSlider.Value / 100;
+        }
+
+        private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta != 0)
+            {
+                int delta = e.Delta > 0 ? 4 : -4;
+                double newVolumeValue = volumeSlider.Value + delta;
+                if (newVolumeValue < 0)
+                    newVolumeValue = 0;
+                if (newVolumeValue > 100)
+                    newVolumeValue = 100;
+
+                volumeSlider.Value = newVolumeValue;
+            }          
+        }
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            btnToggleScreen_Click(sender, e);
         }
     }
 }
