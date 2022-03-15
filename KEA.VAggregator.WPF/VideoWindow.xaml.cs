@@ -36,7 +36,7 @@ namespace KEA.VAggregator.WPF
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
-            timer.Start();
+            timer.Start();            
         }
 
         public void PlayVideo(Video video)
@@ -54,6 +54,8 @@ namespace KEA.VAggregator.WPF
                 mePlayer.Volume = 0;
                 mePlayer.Play();
                 _mediaState = MediaState.Play;
+
+                cmbQuality.SelectionChanged += cmbQuality_SelectionChanged;
             }
         }
 
@@ -61,8 +63,12 @@ namespace KEA.VAggregator.WPF
         {
             if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
             {
+                if (_video.DurationTs.TotalMilliseconds == 0)
+                    _video.DurationTs = mePlayer.NaturalDuration.TimeSpan;
+
                 if (!_sliderMouseDown)
                     videoSlider.Value = mePlayer.Position.TotalMilliseconds * 100 / mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds;
+
                 //lblStatus.Text = $"{mePlayer.Position:mm\\:ss} / {mePlayer.NaturalDuration.TimeSpan:mm\\:ss}";
                 var position = mePlayer.Position;
                 var duration = mePlayer.NaturalDuration.TimeSpan;
@@ -185,6 +191,12 @@ namespace KEA.VAggregator.WPF
                         //if (e.KeyboardDevice.Modifiers != ModifierKeys.Control)
                         mePlayer.SpeedRatio = 1;
                         break;
+                    case Key.D1:
+                        downloadSlider.LowerValue = videoSlider.Value;
+                        break;
+                    case Key.D2:
+                        downloadSlider.HigherValue = videoSlider.Value;
+                        break;
                 }
 
             }
@@ -195,8 +207,12 @@ namespace KEA.VAggregator.WPF
             //if (mePlayer.Source != null && mePlayer.NaturalDuration.HasTimeSpan)
             {
                 var position = mePlayer.Position;
-                mePlayer.Source = new Uri(_video?.QualityUrls[cmbQuality.SelectedItem?.ToString()]);
+
+                _video.PlayUrl = _video?.QualityUrls[cmbQuality.SelectedItem?.ToString()];
+                mePlayer.Source = new Uri(_video.PlayUrl);
                 mePlayer.Position = position;
+
+                //_video.DurationTs = mePlayer.NaturalDuration.TimeSpan;
             }
         }
 
@@ -255,20 +271,28 @@ namespace KEA.VAggregator.WPF
         {
             if (downloadSlider.Visibility == Visibility.Visible)
             {
+                this.WindowStyle = WindowStyle.None;
+                btnToggleScreen_Click(sender, e);
+                mePlayer.Source = null;
+
                 double lowerValue = downloadSlider.LowerValue;
                 double higherValue = downloadSlider.HigherValue;
 
-                double totalMs = mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds;
+                double totalMs = _video.DurationTs.TotalMilliseconds;
                 double lowerMs = totalMs * lowerValue / 100;
                 double higherMs = totalMs * higherValue / 100;
 
                 string startTime = (new TimeSpan(0, 0, 0, 0, (int)lowerMs)).ToString(@"hh\:mm\:ss");
                 string endTime = (new TimeSpan(0, 0, 0, 0, (int)higherMs)).ToString(@"hh\:mm\:ss");//"00:00:10";
 
-                string arguments = $"-ss {startTime} -i {mePlayer.Source.AbsoluteUri} -to {endTime} -c copy -y cut.mp4";
+                string quality = cmbQuality.SelectedItem?.ToString().Split(',')[0];
+                string fileName = $"{_video.Name} {quality}.mp4";
+
+                string arguments = $"-ss {startTime} -i {_video.PlayUrl} -to {endTime} -c copy -copyts -y \"{fileName}\"";
+              
                 ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", arguments);
                 Process process = Process.Start(startInfo);
-                process.WaitForExit();
+                //process.WaitForExit();
             }
             else
             {

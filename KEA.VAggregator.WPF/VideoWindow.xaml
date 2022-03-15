@@ -36,7 +36,7 @@
                     <Button x:Name="btnInfo" Click="btnInfo_Click">Info</Button>
                     <Button x:Name="btnDownload" Click="btnDownload_Click">Download</Button>
 
-                    <ComboBox x:Name="cmbQuality" SelectionChanged="cmbQuality_SelectionChanged" Width="Auto" Height="23" 
+                    <ComboBox x:Name="cmbQuality" Width="Auto" Height="23" 
                               BorderThickness="0" Background="#FFDDDDDD" Text="Unknown" MinWidth="50" Margin="5,0" />
                     
                     <Slider x:Name="volumeSlider" Width="100" VerticalAlignment="Center" ValueChanged="volumeSlider_ValueChanged" Maximum="100" SmallChange="1" LargeChange="10" ></Slider>

@@ -14,6 +14,8 @@ namespace KEA.VAggregator.StdLib.Models
 
         public string Duration { get; set; }
 
+        public TimeSpan DurationTs { get; set; }
+
         public List<string> ScreenshotUrls { get; set; } = new List<string>();
 
         public string Info { get; set; } = string.Empty;
