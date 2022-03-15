@@ -250,5 +250,30 @@ namespace KEA.VAggregator.WPF
         {
             btnToggleScreen_Click(sender, e);
         }
+
+        private void btnDownload_Click(object sender, RoutedEventArgs e)
+        {
+            if (downloadSlider.Visibility == Visibility.Visible)
+            {
+                double lowerValue = downloadSlider.LowerValue;
+                double higherValue = downloadSlider.HigherValue;
+
+                double totalMs = mePlayer.NaturalDuration.TimeSpan.TotalMilliseconds;
+                double lowerMs = totalMs * lowerValue / 100;
+                double higherMs = totalMs * higherValue / 100;
+
+                string startTime = (new TimeSpan(0, 0, 0, 0, (int)lowerMs)).ToString(@"hh\:mm\:ss");
+                string endTime = (new TimeSpan(0, 0, 0, 0, (int)higherMs)).ToString(@"hh\:mm\:ss");//"00:00:10";
+
+                string arguments = $"-ss {startTime} -i {mePlayer.Source.AbsoluteUri} -to {endTime} -c copy -y cut.mp4";
+                ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", arguments);
+                Process process = Process.Start(startInfo);
+                process.WaitForExit();
+            }
+            else
+            {
+                downloadSlider.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
