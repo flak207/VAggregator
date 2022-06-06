@@ -193,6 +193,9 @@ namespace KEA.VAggregator.WPF
                         //if (e.KeyboardDevice.Modifiers != ModifierKeys.Control)
                         mePlayer.SpeedRatio = 1;
                         break;
+                    case Key.D:
+                        btnDownload_Click(this, null);
+                        break;
                     case Key.D1:
                         downloadSlider.LowerValue = videoSlider.Value;
                         break;
