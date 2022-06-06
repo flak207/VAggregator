@@ -36,20 +36,22 @@ namespace KEA.VAggregator.WPF
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
-            timer.Start();            
+            timer.Start();
+
+            this.Closing += (sender, e) => { mePlayer.Source = null; };
         }
 
         public void PlayVideo(Video video)
         {
-            if (!string.IsNullOrWhiteSpace(video?.PlayUrl))
+            if (!string.IsNullOrWhiteSpace(video?.PlayLink))
             {
                 _video = video;
                 _infoWindow = new InfoWindow(_video) { Owner = this };
                 this.Title = _video.Name;
-                cmbQuality.ItemsSource = _video.QualityUrls.Keys.ToList();
-                cmbQuality.SelectedItem = _video.QualityUrls.Keys.FirstOrDefault(k => _video.QualityUrls[k] == _video?.PlayUrl);
+                cmbQuality.ItemsSource = _video.QualityLinks.Keys.ToList();
+                cmbQuality.SelectedItem = _video.QualityLinks.Keys.FirstOrDefault(k => _video.QualityLinks[k] == _video?.PlayLink);
 
-                mePlayer.Source = new Uri(_video?.PlayUrl);
+                mePlayer.Source = _video.SourceUri;
                 //mePlayer.IsMuted = true;
                 mePlayer.Volume = 0;
                 mePlayer.Play();
@@ -208,8 +210,8 @@ namespace KEA.VAggregator.WPF
             {
                 var position = mePlayer.Position;
 
-                _video.PlayUrl = _video?.QualityUrls[cmbQuality.SelectedItem?.ToString()];
-                mePlayer.Source = new Uri(_video.PlayUrl);
+                _video.PlayLink = _video?.QualityLinks[cmbQuality.SelectedItem?.ToString()];
+                mePlayer.Source = new Uri(_video.PlayLink);
                 mePlayer.Position = position;
 
                 //_video.DurationTs = mePlayer.NaturalDuration.TimeSpan;
@@ -222,7 +224,11 @@ namespace KEA.VAggregator.WPF
             {
                 try
                 {
-                    var url = mePlayer.Source.OriginalString.Replace(mePlayer.Source.Query, "");
+                    this.WindowStyle = WindowStyle.None;
+                    btnToggleScreen_Click(sender, e);
+                    mePlayer.Source = null;
+
+                    var url = _video.SourceUri.OriginalString.Replace(_video.SourceUri.Query, "");
                     Process.Start(@"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
                     //D://Program Files//DAUM//PotPlayer//PotPlayerMini64.exe
                 }
@@ -288,7 +294,9 @@ namespace KEA.VAggregator.WPF
                 string quality = cmbQuality.SelectedItem?.ToString().Split(',')[0];
                 string fileName = $"{_video.Name} {quality}.mp4";
 
-                string arguments = $"-ss {startTime} -i {_video.PlayUrl} -to {endTime} -c copy -copyts -y \"{fileName}\"";
+                fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", fileName);
+
+                string arguments = $"-ss {startTime} -i {_video.PlayLink} -to {endTime} -c copy -copyts -y \"{fileName}\"";
               
                 ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", arguments);
                 Process process = Process.Start(startInfo);

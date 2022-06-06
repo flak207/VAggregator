@@ -31,7 +31,7 @@
                 <WrapPanel HorizontalAlignment="Center">
                     <Button x:Name="btnTogglePlay" Click="btnTogglePlay_Click">Pause</Button>
                     <Button x:Name="btnMute" Click="btnMute_Click" Visibility="Collapsed">Mute</Button>
-                    <Button x:Name="btnBrowser" Click="btnBrowser_Click">Browser</Button>
+                    <Button x:Name="btnBrowser" Click="btnBrowser_Click">App</Button>
                     <Button x:Name="btnToggleScreen" Click="btnToggleScreen_Click" Visibility="Collapsed">Full</Button>
                     <Button x:Name="btnInfo" Click="btnInfo_Click">Info</Button>
                     <Button x:Name="btnDownload" Click="btnDownload_Click">Download</Button>

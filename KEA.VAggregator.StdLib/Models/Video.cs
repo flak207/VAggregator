@@ -6,9 +6,13 @@ namespace KEA.VAggregator.StdLib.Models
 {
     public class Video : WebItem
     {
-        public string PlayUrl { get; set; }
+        private Uri _sourceUri = null;
 
-        public Dictionary<string, string> QualityUrls { get; set; } = new Dictionary<string, string>();
+        public Uri SourceUri { get => _sourceUri != null ? _sourceUri : _sourceUri = new Uri(PlayLink); }
+
+        public string PlayLink { get; set; }
+
+        public Dictionary<string, string> QualityLinks { get; set; } = new Dictionary<string, string>();
 
         public string Quality { get; set; }
 
