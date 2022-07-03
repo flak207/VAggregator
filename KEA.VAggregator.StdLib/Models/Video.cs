@@ -8,7 +8,7 @@ namespace KEA.VAggregator.StdLib.Models
     {
         private Uri _sourceUri = null;
 
-        public Uri SourceUri { get => _sourceUri != null ? _sourceUri : _sourceUri = new Uri(PlayLink); }
+        public Uri SourceUri { get => _sourceUri != null ? _sourceUri :(PlayLink != null ? _sourceUri = new Uri(PlayLink) : null); }
 
         public string PlayLink { get; set; }
 

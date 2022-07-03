@@ -2,6 +2,7 @@
 using KEA.VAggregator.StdLib.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -94,17 +95,21 @@ namespace KEA.VAggregator.WPF
         private void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
-            if (selectedItem != null && e.ClickCount > 1)
+            if (selectedItem as Video != null && e.ClickCount > 1)
             {
-                if (selectedItem is Video)
+                Video video = selectedItem as Video;
+                _videoService.FillVideoUrlsAndInfo(video);
+
+                if (video.PlayLink != null)
                 {
                     VideoWindow videoWindow = new VideoWindow(); // { Owner = this };
                     videoWindow.Show();
-
-                    Video video = selectedItem as Video;
-                    _videoService.FillVideoUrlsAndInfo(video);
                     //video.PlayUrl = _videoService.GetVideoUrl(video);
                     videoWindow.PlayVideo(video);
+                }
+                else
+                {
+                    Process.Start(video.TargetUrl);
                 }
             }
         }
