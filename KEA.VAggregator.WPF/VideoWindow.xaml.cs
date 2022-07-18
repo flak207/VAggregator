@@ -87,6 +87,7 @@ namespace KEA.VAggregator.WPF
                 _mediaState = MediaState.Pause;
                 mePlayer.Pause();
                 btnTogglePlay.Content = "Play";
+                mePlayer.Margin = new Thickness(0);
             }
             else
             {
@@ -309,6 +310,32 @@ namespace KEA.VAggregator.WPF
             {
                 downloadSlider.Visibility = Visibility.Visible;
             }
+        }
+
+
+        Point mousePosition;
+        private void mePlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            mousePosition = e.GetPosition(mePlayer);
+            Mouse.Capture(mePlayer);
+        }
+
+        private void mePlayer_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var newPosition = e.GetPosition(mePlayer);
+                var margin = mePlayer.Margin;
+                margin.Right -= (newPosition.X - mousePosition.X);
+                mePlayer.Margin = margin;   
+
+                mousePosition = newPosition;
+            }
+        }
+
+        private void mePlayer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(null);
         }
     }
 }

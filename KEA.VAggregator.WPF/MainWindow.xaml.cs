@@ -2,6 +2,7 @@
 using KEA.VAggregator.StdLib.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -15,13 +16,29 @@ namespace KEA.VAggregator.WPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region Fields
 
         private readonly IVideoService _videoService = new TestVideoService();
         private DispatcherTimer _screenshotTimer; // = new DispatcherTimer(); 
+        private int _count = 20;
+
+        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int Count
+        {
+            get => _count;
+            set
+            {
+                _count = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Count"));
+            }
+        }
         #endregion
+
 
         #region Constructor
 
@@ -31,6 +48,7 @@ namespace KEA.VAggregator.WPF
 
             _screenshotTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(700), DispatcherPriority.Normal, screenshotTimer_Tick, this.Dispatcher);
             Loaded += MainWindow_Loaded;
+            this.DataContext = this;
         }
         #endregion
 
@@ -38,7 +56,7 @@ namespace KEA.VAggregator.WPF
 
         public void SearchVideos()
         {
-            var items = _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem);
+            var items = _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem, this.Count);
             LoadVideos(items);
         }
 
