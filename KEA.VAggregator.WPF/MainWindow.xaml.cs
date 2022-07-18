@@ -157,6 +157,11 @@ namespace KEA.VAggregator.WPF
             {
                 var items = _videoService.GetVideos(category);
                 LoadVideos(items);
+                var first = items.FirstOrDefault();
+                if (first != null)
+                {
+                    wrapPanel.ScrollIntoView(first);
+                }
             }
         }
 
