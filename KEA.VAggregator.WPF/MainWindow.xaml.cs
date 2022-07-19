@@ -63,7 +63,14 @@ namespace KEA.VAggregator.WPF
         public void LoadVideos(IEnumerable<Video> videos)
         {
             if (videos != null && wrapPanel != null)
+            {
                 wrapPanel.ItemsSource = videos;
+                var first = videos.FirstOrDefault();
+                if (first != null)
+                {
+                    wrapPanel.ScrollIntoView(first);
+                }
+            }
         }
         #endregion
 
@@ -174,12 +181,7 @@ namespace KEA.VAggregator.WPF
             if (category != null)
             {
                 var items = _videoService.GetVideos(category);
-                LoadVideos(items);
-                var first = items.FirstOrDefault();
-                if (first != null)
-                {
-                    wrapPanel.ScrollIntoView(first);
-                }
+                LoadVideos(items);              
             }
         }
 
