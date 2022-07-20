@@ -6,9 +6,7 @@ namespace KEA.VAggregator.StdLib.Models
 {
     public class Video : WebItem
     {
-        private Uri _sourceUri = null;
-
-        public Uri SourceUri { get => _sourceUri != null ? _sourceUri :(PlayLink != null ? _sourceUri = new Uri(PlayLink) : null); }
+        //public Uri SourceUri { get => PlayLink != null ? _sourceUri = new Uri(PlayLink) : null; }
 
         public string PlayLink { get; set; }
 

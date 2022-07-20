@@ -51,7 +51,7 @@ namespace KEA.VAggregator.WPF
                 cmbQuality.ItemsSource = _video.QualityLinks.Keys.ToList();
                 cmbQuality.SelectedItem = _video.QualityLinks.Keys.FirstOrDefault(k => _video.QualityLinks[k] == _video?.PlayLink);
 
-                mePlayer.Source = _video.SourceUri;
+                mePlayer.Source = new Uri(_video.PlayLink);
                 //mePlayer.IsMuted = true;
                 mePlayer.Volume = 0;
                 mePlayer.Play();
@@ -230,9 +230,10 @@ namespace KEA.VAggregator.WPF
                 {
                     this.WindowStyle = WindowStyle.None;
                     btnToggleScreen_Click(sender, e);
+                    var playerSource = mePlayer.Source;
                     mePlayer.Source = null;
 
-                    var url = _video.SourceUri.OriginalString.Replace(_video.SourceUri.Query, "");
+                    var url = playerSource.OriginalString.Replace(playerSource.Query, "");
                     Process.Start(@"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
                     //D://Program Files//DAUM//PotPlayer//PotPlayerMini64.exe
                 }
