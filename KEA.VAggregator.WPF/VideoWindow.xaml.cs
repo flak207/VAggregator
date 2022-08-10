@@ -1,4 +1,5 @@
 ﻿using KEA.VAggregator.StdLib.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -162,9 +163,11 @@ namespace KEA.VAggregator.WPF
                         btnTogglePlay_Click(sender, e);
                         break;
                     case Key.Left:
+                    case Key.A:
                         mePlayer.Position = new TimeSpan(mePlayer.Position.Ticks).Subtract(new TimeSpan(0, 0, 5));
                         break;
                     case Key.Right:
+                    case Key.S:
                         mePlayer.Position = new TimeSpan(mePlayer.Position.Ticks).Add(new TimeSpan(0, 0, 5));
                         break;
                     case Key.Up:
@@ -202,6 +205,9 @@ namespace KEA.VAggregator.WPF
                         break;
                     case Key.D2:
                         downloadSlider.HigherValue = videoSlider.Value;
+                        break;
+                    case Key.O:
+                        OpenFile();
                         break;
                 }
 
@@ -302,7 +308,7 @@ namespace KEA.VAggregator.WPF
                 fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", fileName);
 
                 string arguments = $"-ss {startTime} -i {_video.PlayLink} -to {endTime} -c copy -copyts -y \"{fileName}\"";
-              
+
                 ProcessStartInfo startInfo = new ProcessStartInfo("ffmpeg", arguments);
                 Process process = Process.Start(startInfo);
                 //process.WaitForExit();
@@ -315,7 +321,7 @@ namespace KEA.VAggregator.WPF
 
 
         Point mousePosition;
-        private void mePlayer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void mePlayer_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             mousePosition = e.GetPosition(mePlayer);
             Mouse.Capture(mePlayer);
@@ -323,20 +329,30 @@ namespace KEA.VAggregator.WPF
 
         private void mePlayer_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.RightButton == MouseButtonState.Pressed)
             {
                 var newPosition = e.GetPosition(mePlayer);
                 var margin = mePlayer.Margin;
                 margin.Right -= (newPosition.X - mousePosition.X);
-                mePlayer.Margin = margin;   
+                mePlayer.Margin = margin;
 
                 mousePosition = newPosition;
             }
         }
 
-        private void mePlayer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void mePlayer_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             Mouse.Capture(null);
+        }
+
+        private void OpenFile()
+        {
+            OpenFileDialog dlg = new OpenFileDialog() { Filter = "Video files (*.mp4, *.avi)|*.mp4;*.avi|All files (*.*)|*.*" };
+            var dlgResult = dlg.ShowDialog();
+            if (dlgResult.HasValue && dlgResult.Value)
+            {
+                mePlayer.Source = new Uri(dlg.FileName);
+            }
         }
     }
 }
