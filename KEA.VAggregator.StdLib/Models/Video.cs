@@ -20,6 +20,8 @@ namespace KEA.VAggregator.StdLib.Models
 
         public List<string> ScreenshotUrls { get; set; } = new List<string>();
 
+        public string PreviewVideoUrl { get; set; } 
+
         public string Info { get; set; } = string.Empty;
 
         public Dictionary<string, string> InfoUrls { get; set; } = new Dictionary<string, string>();

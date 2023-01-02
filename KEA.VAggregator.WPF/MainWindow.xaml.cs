@@ -24,7 +24,7 @@ namespace KEA.VAggregator.WPF
         private DispatcherTimer _screenshotTimer; // = new DispatcherTimer(); 
         private int _count = 20;
 
-        
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -80,12 +80,12 @@ namespace KEA.VAggregator.WPF
         {
             if (wrapPanel.ItemsSource == null)
             {
-                var items = _videoService.GetVideos(); //.GetCategories().OrderBy(c => c.Name);
-                LoadVideos(items);
-
                 var categories = _videoService.GetCategories();
                 categories = categories.OrderBy(c => c.Name);
                 categoriesList.ItemsSource = categories;
+
+                var items = _videoService.GetVideos();
+                LoadVideos(items);
             }
         }
 
@@ -181,7 +181,7 @@ namespace KEA.VAggregator.WPF
             if (category != null)
             {
                 var items = _videoService.GetVideos(category);
-                LoadVideos(items);              
+                LoadVideos(items);
             }
         }
 

@@ -28,7 +28,6 @@ namespace KEA.VAggregator.WPF
         private bool _sliderMouseDown = false;
         private MediaState _mediaState = MediaState.Play;
         private Video _video = null;
-        private InfoWindow _infoWindow = null;
 
         public VideoWindow()
         {
@@ -47,7 +46,6 @@ namespace KEA.VAggregator.WPF
             if (!string.IsNullOrWhiteSpace(video?.PlayLink))
             {
                 _video = video;
-                _infoWindow = new InfoWindow(_video) { Owner = this };
                 this.Title = _video.Name;
                 cmbQuality.ItemsSource = _video.QualityLinks.Keys.ToList();
                 cmbQuality.SelectedItem = _video.QualityLinks.Keys.FirstOrDefault(k => _video.QualityLinks[k] == _video?.PlayLink);
@@ -239,7 +237,11 @@ namespace KEA.VAggregator.WPF
                     var playerSource = mePlayer.Source;
                     mePlayer.Source = null;
 
-                    var url = playerSource.OriginalString.Replace(playerSource.Query, "");
+                    var url = playerSource.OriginalString; 
+                    if (!string.IsNullOrWhiteSpace(playerSource.Query))
+                    {
+                        url = url.Replace(playerSource.Query, "");
+                    }
                     Process.Start(@"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
                     //D://Program Files//DAUM//PotPlayer//PotPlayerMini64.exe
                 }
@@ -252,11 +254,14 @@ namespace KEA.VAggregator.WPF
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
-            if (_infoWindow != null)
-            {
-                _infoWindow.Show();
-                _infoWindow.Activate();
-            }
+            MainWindow mainWindow = new MainWindow() { WindowStartupLocation = WindowStartupLocation.CenterScreen };
+            mainWindow.LoadVideos(_video.RelatedVideos);
+            mainWindow.Show();
+            //if (_infoWindow != null)
+            //{
+            //    _infoWindow.Show();
+            //    _infoWindow.Activate();
+            //}
         }
 
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
