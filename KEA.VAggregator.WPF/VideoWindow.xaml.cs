@@ -226,7 +226,7 @@ namespace KEA.VAggregator.WPF
             }
         }
 
-        private void btnBrowser_Click(object sender, RoutedEventArgs e)
+        private void btnApp_Click(object sender, RoutedEventArgs e)
         {
             if (mePlayer.Source != null)
             {
@@ -237,7 +237,7 @@ namespace KEA.VAggregator.WPF
                     var playerSource = mePlayer.Source;
                     mePlayer.Source = null;
 
-                    var url = playerSource.OriginalString; 
+                    var url = playerSource.OriginalString;
                     if (!string.IsNullOrWhiteSpace(playerSource.Query))
                     {
                         url = url.Replace(playerSource.Query, "");
@@ -252,16 +252,32 @@ namespace KEA.VAggregator.WPF
             }
         }
 
+        private void btnBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            if (_video.TargetUrl != null)
+            {
+                try
+                {
+                    this.WindowStyle = WindowStyle.None;
+                    btnToggleScreen_Click(sender, e);
+                    var playerSource = mePlayer.Source;
+                    mePlayer.Source = null;
+
+                 
+                    Process.Start(@"firefox", _video.TargetUrl);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex); ;
+                }
+            }
+        }
+
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow() { WindowStartupLocation = WindowStartupLocation.CenterScreen };
             mainWindow.LoadVideos(_video.RelatedVideos);
             mainWindow.Show();
-            //if (_infoWindow != null)
-            //{
-            //    _infoWindow.Show();
-            //    _infoWindow.Activate();
-            //}
         }
 
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -359,5 +375,7 @@ namespace KEA.VAggregator.WPF
                 mePlayer.Source = new Uri(dlg.FileName);
             }
         }
+
+       
     }
 }
