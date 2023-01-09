@@ -10,8 +10,14 @@
     </ContentPage.Resources>
 
     <Grid BackgroundColor="Black" >
-        <ScrollView Margin="20,35,20,20">
-            <local:WrapLayout x:Name="wrapLayout"  Background="Black"/>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <ScrollView Margin="0" Grid.Column="1">
+            <local:WrapLayout x:Name="wrapPanel"  Background="Black" ColumnSpacing="0" RowSpacing="10"/>
         </ScrollView>
         
         <!--<xct:MediaElement

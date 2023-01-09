@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using KEA.VAggregator.StdLib.Models;
+using KEA.VAggregator.StdLib.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.Markup;
 using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
@@ -14,7 +17,7 @@ namespace KEA.VAggregator.Mobile
 {
     public partial class MainPage : ContentPage
     {
-        HttpClient _client = new HttpClient();
+        private readonly IVideoService _videoService = new TestVideoService();
 
         public MainPage()
         {
@@ -25,35 +28,29 @@ namespace KEA.VAggregator.Mobile
         {
             base.OnAppearing();
 
-            var images = await GetImageListAsync();
-            if (images != null)
+            var items = _videoService.GetVideos();
+            LoadVideos(items);
+        }
+
+        public void LoadVideos(IEnumerable<Video> videos)
+        {
+            if (videos != null && wrapPanel != null)
             {
-                foreach (var photo in images.Photos)
+                // wrapPanel.ItemsSource = videos;
+                if (videos != null)
                 {
-                    var image = new Image
+                    foreach (var video in videos)
                     {
-                        Source = ImageSource.FromUri(new Uri(photo))
-                    };
-                    wrapLayout.Children.Add(image);
+                        var image = new Image
+                        {
+                            Source = ImageSource.FromUri(new Uri(video.ImageUrl))
+                        };
+                        wrapPanel.Children.Add(image);
+                    }
                 }
             }
         }
 
-        async Task<ImageList> GetImageListAsync()
-        {
-            try
-            {
-                string requestUri = "https://raw.githubusercontent.com/xamarin/docs-archive/master/Images/stock/small/stock.json";
-                string result = await _client.GetStringAsync(requestUri);
-                return JsonConvert.DeserializeObject<ImageList>(result);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"\tERROR: {ex.Message}");
-            }
-
-            return null;
-        }
 
     }
 }
