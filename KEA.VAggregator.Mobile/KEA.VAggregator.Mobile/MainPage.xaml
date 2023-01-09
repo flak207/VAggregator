@@ -2,39 +2,24 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="KEA.VAggregator.Mobile.MainPage">
+             xmlns:local="clr-namespace:KEA.VAggregator.Mobile"
+             x:Class="KEA.VAggregator.Mobile.MainPage"
+             BackgroundColor="Aqua">
     <ContentPage.Resources>
         <xct:TimeSpanToDoubleConverter x:Key="TimeSpanConverter" />
     </ContentPage.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <xct:MediaElement
+    <Grid BackgroundColor="Black" >
+        <ScrollView Margin="20,35,20,20">
+            <local:WrapLayout x:Name="wrapLayout"  Background="Black"/>
+        </ScrollView>
+        
+        <!--<xct:MediaElement
             x:Name="mediaElement"
-            Aspect="Fill"
-            HorizontalOptions="Fill"
-            VerticalOptions="Fill"
-            MediaEnded="OnMediaEnded"
-            MediaFailed="OnMediaFailed"
-            MediaOpened="OnMediaOpened"
-            SeekCompleted="OnSeekCompleted"
-            ShowsPlaybackControls="False"
-            Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
-        <!--<Slider
-            Grid.Row="1"
-            BindingContext="{x:Reference mediaElement}"
-            Maximum="{Binding Duration, Converter={StaticResource TimeSpanConverter}}"
-            Value="{Binding Position, Converter={StaticResource TimeSpanConverter}}" />-->
-        <!--<Label Grid.Row="3" Margin="20,10">
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span Text="Speed:" />
-                    <Span Text="{Binding Source={x:Reference mediaElement}, Path=Speed}" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>-->
+            Aspect="AspectFit"
+            ShowsPlaybackControls="True"
+            Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />-->
+       
     </Grid>
 
 </ContentPage>
