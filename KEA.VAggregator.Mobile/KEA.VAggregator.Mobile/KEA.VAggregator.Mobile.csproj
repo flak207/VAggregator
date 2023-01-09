@@ -24,4 +24,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\KEA.VAggregator.StdLib\KEA.VAggregator.StdLib.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="AppShell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="VideoPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

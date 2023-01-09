@@ -17,7 +17,8 @@ namespace KEA.VAggregator.Mobile
 {
     public partial class MainPage : ContentPage
     {
-        private readonly IVideoService _videoService = new TestVideoService();
+        private IVideoService _videoService => DependencyService.Get<IVideoService>(); //new TestVideoService();
+        //TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
 
         public MainPage()
         {
@@ -27,6 +28,8 @@ namespace KEA.VAggregator.Mobile
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            Shell.SetTabBarIsVisible(this, false);
+            Shell.SetNavBarIsVisible(this, false);
 
             var items = _videoService.GetVideos();
             LoadVideos(items);
@@ -45,6 +48,13 @@ namespace KEA.VAggregator.Mobile
                         {
                             Source = ImageSource.FromUri(new Uri(video.ImageUrl))
                         };
+                        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+                        tapGestureRecognizer.Tapped += async (s, e) =>
+                        {
+                            _videoService.FillVideoUrlsAndInfo(video);
+                            await Shell.Current.GoToAsync($"{nameof(VideoPage)}?{nameof(VideoPage.PlayLink)}={video.PlayLink}");
+                        };
+                        image.GestureRecognizers.Add(tapGestureRecognizer);
                         wrapPanel.Children.Add(image);
                     }
                 }

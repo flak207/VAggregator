@@ -1,31 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:local="clr-namespace:KEA.VAggregator.Mobile"
              x:Class="KEA.VAggregator.Mobile.MainPage"
              BackgroundColor="Aqua">
-    <ContentPage.Resources>
-        <xct:TimeSpanToDoubleConverter x:Key="TimeSpanConverter" />
-    </ContentPage.Resources>
-
     <Grid BackgroundColor="Black" >
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
         <ScrollView Margin="0" Grid.Column="1">
             <local:WrapLayout x:Name="wrapPanel"  Background="Black" ColumnSpacing="0" RowSpacing="10"/>
         </ScrollView>
-        
-        <!--<xct:MediaElement
-            x:Name="mediaElement"
-            Aspect="AspectFit"
-            ShowsPlaybackControls="True"
-            Source="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />-->
-       
+
     </Grid>
 
 </ContentPage>

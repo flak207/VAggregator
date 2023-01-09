@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KEA.VAggregator.StdLib.Services;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,8 +10,8 @@ namespace KEA.VAggregator.Mobile
         public App()
         {
             InitializeComponent();
-
-            MainPage = new MainPage();
+            DependencyService.Register<IVideoService, TestVideoService>();
+            MainPage = new AppShell();
         }
 
         protected override void OnStart()
