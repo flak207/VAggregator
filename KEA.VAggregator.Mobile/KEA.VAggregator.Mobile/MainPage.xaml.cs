@@ -24,12 +24,5 @@ namespace KEA.VAggregator.Mobile
 
         void OnSeekCompleted(object sender, EventArgs e) => Console.WriteLine("Seek completed.");
 
-        void OnResetClicked(object sender, EventArgs e) => mediaElement.Source = null;
-
-
-        private void Slider_DragCompleted(object sender, EventArgs e)
-        {
-            mediaElement.Speed = MainSlider.Value;
-        }
     }
 }
