@@ -27,5 +27,7 @@ namespace KEA.VAggregator.StdLib.Models
         public Dictionary<string, string> InfoUrls { get; set; } = new Dictionary<string, string>();
 
         public IEnumerable<Video> RelatedVideos { get; set; } = new List<Video>();
+
+        public int Page { get; set; } = 1;
     }
 }

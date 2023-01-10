@@ -29,14 +29,21 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            
             <TextBox x:Name="searchInput" Grid.Column="1" Height="25" FontSize="16"
                      VerticalAlignment="Center" PreviewKeyDown="searchInput_PreviewKeyDown"/>
+            
             <TextBox x:Name="countTxt" Grid.Column="2" Height="25" FontSize="16"
                      VerticalAlignment="Center" Margin="10,0,5,0" Width="32" Text="{Binding Count}" MaxLength="3"/>
+            
             <Button x:Name="searchButton" Grid.Column="3" Margin="5" 
-                    Height="25" Width="75" Click="searchButton_Click">Search</Button>
-            <ComboBox x:Name="cmbVideoQuality" Grid.Column="4" Margin="5" Width="75" SelectedIndex="0"  
+                    Height="25" Width="70" Click="searchButton_Click">Search</Button>
+            
+            <ComboBox x:Name="cmbVideoQuality" Grid.Column="4" Margin="5" Width="70" SelectedIndex="0"  
                       ItemsSource="{Binding Source={StaticResource videoQualityProvider}}"
                       SelectionChanged="cmbVideoQuality_SelectionChanged">
                 <ComboBox.ItemTemplate>
@@ -45,6 +52,12 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+
+            <TextBox Grid.Column="5" Height="25" FontSize="16"
+                     VerticalAlignment="Center" Margin="5,0,5,0" Width="32" Text="{Binding Page}" MaxLength="3"/>
+
+            <Button x:Name="nextButton" Grid.Column="6" Margin="5" 
+                    Height="25" Width="70" Click="nextButton_Click">Next Page</Button>
         </Grid>
         <Grid x:Name="listGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>

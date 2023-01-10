@@ -24,6 +24,7 @@ namespace KEA.VAggregator.WPF
         private readonly IVideoService _videoService = new TestVideoService();
         private DispatcherTimer _screenshotTimer; // = new DispatcherTimer(); 
         private int _count = 20;
+        private int _page = 1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,8 +37,18 @@ namespace KEA.VAggregator.WPF
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Count"));
             }
         }
-        #endregion
 
+        public int Page
+        {
+            get => _page;
+            set
+            {
+                _page = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Page"));
+            }
+        }
+
+        #endregion
 
         #region Constructor
 
@@ -55,7 +66,12 @@ namespace KEA.VAggregator.WPF
 
         public async Task SearchVideos()
         {
-            var items = await _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem, this.Count);
+            string searchTxt = searchInput.Text;
+            Category category =  categoriesList.SelectedItem as Category;
+
+            var items = string.IsNullOrEmpty(searchTxt) ? await _videoService.GetVideos(category, this.Page)
+                : await _videoService.SearchVideos(searchTxt, (VideoQuality)cmbVideoQuality.SelectedItem, this.Count);
+
             LoadVideos(items);
         }
 
@@ -175,14 +191,26 @@ namespace KEA.VAggregator.WPF
 
         private async void categoriesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            searchInput.Text = string.Empty;
+            this.Page = 1;
+
             Category category = categoriesList.SelectedItem as Category;
             if (category != null)
             {
-                var items = await _videoService.GetVideos(category);
+                var items = await _videoService.GetVideos(category, this.Page);
                 LoadVideos(items);
             }
         }
 
+        private async void nextButton_Click(object sender, RoutedEventArgs e)
+        {
+            searchInput.Text = string.Empty;
+            this.Page++;
+            await SearchVideos();
+        }
+
         #endregion
+
+
     }
 }

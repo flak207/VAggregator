@@ -10,7 +10,7 @@ namespace KEA.VAggregator.StdLib.Services
     {
         Task<IEnumerable<Category>> GetCategories();
 
-        Task<IEnumerable<Video>> GetVideos(Category category = null);
+        Task<IEnumerable<Video>> GetVideos(Category category = null, int page = 1);
 
         Task<IEnumerable<Video>> SearchVideos(string text, VideoQuality videoQuality = VideoQuality.Unknown, int count = 20);
 
