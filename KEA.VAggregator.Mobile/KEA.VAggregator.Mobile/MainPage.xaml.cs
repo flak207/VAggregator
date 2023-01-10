@@ -1,6 +1,5 @@
 ﻿using KEA.VAggregator.StdLib.Models;
 using KEA.VAggregator.StdLib.Services;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +16,7 @@ namespace KEA.VAggregator.Mobile
 {
     public partial class MainPage : ContentPage
     {
-        private IVideoService _videoService => DependencyService.Get<IVideoService>(); //new TestVideoService();
-        //TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+        private IVideoService _videoService => DependencyService.Get<IVideoService>(); 
 
         public MainPage()
         {
@@ -31,7 +29,7 @@ namespace KEA.VAggregator.Mobile
             Shell.SetTabBarIsVisible(this, false);
             Shell.SetNavBarIsVisible(this, false);
 
-            var items = _videoService.GetVideos();
+            var items = await _videoService.GetVideos();
             LoadVideos(items);
         }
 
@@ -51,7 +49,7 @@ namespace KEA.VAggregator.Mobile
                         TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
                         tapGestureRecognizer.Tapped += async (s, e) =>
                         {
-                            _videoService.FillVideoUrlsAndInfo(video);
+                            await _videoService.FillVideoUrlsAndInfo(video);
                             await Shell.Current.GoToAsync($"{nameof(VideoPage)}?{nameof(VideoPage.PlayLink)}={video.PlayLink}");
                         };
                         image.GestureRecognizers.Add(tapGestureRecognizer);

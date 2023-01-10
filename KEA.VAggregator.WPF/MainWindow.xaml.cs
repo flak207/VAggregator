@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,8 +24,6 @@ namespace KEA.VAggregator.WPF
         private readonly IVideoService _videoService = new TestVideoService();
         private DispatcherTimer _screenshotTimer; // = new DispatcherTimer(); 
         private int _count = 20;
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,9 +53,9 @@ namespace KEA.VAggregator.WPF
 
         #region Methods
 
-        public void SearchVideos()
+        public async Task SearchVideos()
         {
-            var items = _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem, this.Count);
+            var items = await _videoService.SearchVideos(searchInput.Text, (VideoQuality)cmbVideoQuality.SelectedItem, this.Count);
             LoadVideos(items);
         }
 
@@ -76,15 +75,15 @@ namespace KEA.VAggregator.WPF
 
         #region Event Handlers
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (wrapPanel.ItemsSource == null)
             {
-                var categories = _videoService.GetCategories();
+                var categories = await _videoService.GetCategories();
                 categories = categories.OrderBy(c => c.Name);
                 categoriesList.ItemsSource = categories;
 
-                var items = _videoService.GetVideos();
+                var items = await _videoService.GetVideos();
                 LoadVideos(items);
             }
         }
@@ -96,15 +95,15 @@ namespace KEA.VAggregator.WPF
                 searchInput.Text = selectedItem.Name;
         }
 
-        private void searchButton_Click(object sender, RoutedEventArgs e)
+        private async void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchVideos();
+            await SearchVideos();
         }
 
-        private void searchInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void searchInput_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                SearchVideos();
+                await SearchVideos();
         }
 
         private void miCopyName_Click(object sender, RoutedEventArgs e)
@@ -117,19 +116,18 @@ namespace KEA.VAggregator.WPF
             }
         }
 
-        private void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
             if (selectedItem as Video != null && e.ClickCount > 1)
             {
                 Video video = selectedItem as Video;
-                _videoService.FillVideoUrlsAndInfo(video);
+                await _videoService.FillVideoUrlsAndInfo(video);
 
                 if (video.PlayLink != null)
                 {
                     VideoWindow videoWindow = new VideoWindow(); // { Owner = this };
                     videoWindow.Show();
-                    //video.PlayUrl = _videoService.GetVideoUrl(video);
                     videoWindow.PlayVideo(video);
                 }
                 else
@@ -169,18 +167,18 @@ namespace KEA.VAggregator.WPF
             }
         }
 
-        private void cmbVideoQuality_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmbVideoQuality_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (wrapPanel != null)
-                SearchVideos();
+                await SearchVideos();
         }
 
-        private void categoriesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void categoriesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Category category = categoriesList.SelectedItem as Category;
             if (category != null)
             {
-                var items = _videoService.GetVideos(category);
+                var items = await _videoService.GetVideos(category);
                 LoadVideos(items);
             }
         }
