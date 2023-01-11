@@ -25,15 +25,28 @@
             </CollectionView>
         </ScrollView>
 
-        <ScrollView Margin="0" Grid.Column="1">
-            <local:WrapItemsControl x:Name="wrapPanel" Margin="0" ColumnSpacing="0" RowSpacing="10" Background="Black" >
+        <ScrollView Grid.Column="1">
+            <local:WrapItemsControl x:Name="wrapPanel" ColumnSpacing="10" RowSpacing="10" Background="Black" >
                 <local:WrapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding ImageUrl}" >
-                            <Image.GestureRecognizers>
+                        <Grid>
+                            <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="videoDoubleTapped" NumberOfTapsRequired="2" />
-                            </Image.GestureRecognizers>
-                        </Image>
+                            </Grid.GestureRecognizers>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Image Source="{Binding ImageUrl}" WidthRequest="150" HeightRequest="100"/>
+                            <!--<Label Text="{Binding Quality}" Margin="3" TextColor="White" FontAttributes="Bold" FontSize="11"
+                                       VerticalOptions="Start" HorizontalOptions="Start" Background="Black" Opacity="0.6"/>-->
+                            <Label Text="{Binding Duration}" Margin="3" TextColor="White" FontAttributes="Bold" FontSize="11"
+                                       VerticalOptions="End" HorizontalOptions="End" Background="Black" Opacity="0.6"/>
+
+                            <Label Grid.Row="1" Text="{Binding Name}" Margin="0,-5,0,0" Padding="0" TextColor="White" FontAttributes="Bold" FontSize="11"  WidthRequest="150"
+                                       VerticalOptions="Start" HorizontalOptions="Start" Background="Black" Opacity="0.6" LineBreakMode="TailTruncation" />
+                        </Grid>
                     </DataTemplate>
                 </local:WrapItemsControl.ItemTemplate>
             </local:WrapItemsControl>
