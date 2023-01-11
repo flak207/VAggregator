@@ -17,6 +17,7 @@ namespace KEA.VAggregator.Mobile
     public partial class MainPage : ContentPage
     {
         private IVideoService _videoService => DependencyService.Get<IVideoService>();
+        private int _page = 1;
 
         public MainPage()
         {
@@ -48,10 +49,11 @@ namespace KEA.VAggregator.Mobile
 
         private async void categoryChanged(object sender, SelectionChangedEventArgs e)
         {
+            _page = 1;
             Category category = categoryPanel.SelectedItem as Category;
             if (category != null)
             {
-                var items = await _videoService.GetVideos(category);
+                var items = await _videoService.GetVideos(category, _page);
                 LoadVideos(items);
             }
         }
@@ -66,5 +68,18 @@ namespace KEA.VAggregator.Mobile
             }
         }
 
+        private async void searchButton_Clicked(object sender, EventArgs e)
+        {
+            string searchTxt = searchInput.Text;
+            Category category = categoryPanel.SelectedItem as Category;
+            var items = string.IsNullOrEmpty(searchTxt) ? await _videoService.GetVideos(category, ++_page)
+                : await _videoService.SearchVideos(searchTxt, VideoQuality.Unknown, (50 * _page++));
+            LoadVideos(items);
+        }
+
+        private void searchInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _page = 1;
+        }
     }
 }
