@@ -7,7 +7,7 @@
     <Grid BackgroundColor="Black" >
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="120" />
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -23,11 +23,20 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--<StackLayout x:Name="categoryPanel" Orientation="Vertical" HorizontalOptions="End"/>-->
         </ScrollView>
 
         <ScrollView Margin="0" Grid.Column="1">
-            <local:WrapLayout x:Name="wrapPanel"  Background="Black" ColumnSpacing="0" RowSpacing="10"/>
+            <local:WrapItemsControl x:Name="wrapPanel" Margin="0" ColumnSpacing="0" RowSpacing="10" Background="Black" >
+                <local:WrapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding ImageUrl}" >
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="videoDoubleTapped" NumberOfTapsRequired="2" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </DataTemplate>
+                </local:WrapItemsControl.ItemTemplate>
+            </local:WrapItemsControl>
         </ScrollView>
 
     </Grid>

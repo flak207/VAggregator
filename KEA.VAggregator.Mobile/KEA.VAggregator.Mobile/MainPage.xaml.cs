@@ -16,7 +16,7 @@ namespace KEA.VAggregator.Mobile
 {
     public partial class MainPage : ContentPage
     {
-        private IVideoService _videoService => DependencyService.Get<IVideoService>(); 
+        private IVideoService _videoService => DependencyService.Get<IVideoService>();
 
         public MainPage()
         {
@@ -39,28 +39,10 @@ namespace KEA.VAggregator.Mobile
 
         public void LoadVideos(IEnumerable<Video> videos)
         {
-            if (wrapPanel != null)
+            if (wrapPanel != null && videos != null)
             {
-                wrapPanel.Children.Clear();
-                // wrapPanel.ItemsSource = videos;
-                if (videos != null)
-                {
-                    foreach (var video in videos)
-                    {
-                        var image = new Image
-                        {
-                            Source = ImageSource.FromUri(new Uri(video.ImageUrl))
-                        };
-                        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer() { NumberOfTapsRequired = 2 };
-                        tapGestureRecognizer.Tapped += async (s, e) =>
-                        {
-                            await _videoService.FillVideoUrlsAndInfo(video);
-                            await Shell.Current.GoToAsync($"{nameof(VideoPage)}?{nameof(VideoPage.PlayLink)}={video.PlayLink}");
-                        };
-                        image.GestureRecognizers.Add(tapGestureRecognizer);
-                        wrapPanel.Children.Add(image);
-                    }
-                }
+                var list = videos.ToList(); // new List<Video>() { videos.FirstOrDefault() }; 
+                wrapPanel.ItemsSource = list;
             }
         }
 
@@ -73,5 +55,16 @@ namespace KEA.VAggregator.Mobile
                 LoadVideos(items);
             }
         }
+
+        private async void videoDoubleTapped(object sender, EventArgs e)
+        {
+            Video video = (sender as BindableObject).BindingContext as Video;
+            if (video != null)
+            {
+                await _videoService.FillVideoUrlsAndInfo(video);
+                await Shell.Current.GoToAsync($"{nameof(VideoPage)}?{nameof(VideoPage.PlayLink)}={video.PlayLink}");
+            }
+        }
+
     }
 }
