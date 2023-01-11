@@ -29,14 +29,19 @@ namespace KEA.VAggregator.Mobile
             Shell.SetTabBarIsVisible(this, false);
             Shell.SetNavBarIsVisible(this, false);
 
+            var categories = await _videoService.GetCategories();
+            categories = categories.OrderBy(c => c.Name);
+            categoryPanel.ItemsSource = categories;
+
             var items = await _videoService.GetVideos();
             LoadVideos(items);
         }
 
         public void LoadVideos(IEnumerable<Video> videos)
         {
-            if (videos != null && wrapPanel != null)
+            if (wrapPanel != null)
             {
+                wrapPanel.Children.Clear();
                 // wrapPanel.ItemsSource = videos;
                 if (videos != null)
                 {
@@ -46,7 +51,7 @@ namespace KEA.VAggregator.Mobile
                         {
                             Source = ImageSource.FromUri(new Uri(video.ImageUrl))
                         };
-                        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+                        TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer() { NumberOfTapsRequired = 2 };
                         tapGestureRecognizer.Tapped += async (s, e) =>
                         {
                             await _videoService.FillVideoUrlsAndInfo(video);
@@ -59,6 +64,14 @@ namespace KEA.VAggregator.Mobile
             }
         }
 
-
+        private async void categoryChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Category category = categoryPanel.SelectedItem as Category;
+            if (category != null)
+            {
+                var items = await _videoService.GetVideos(category);
+                LoadVideos(items);
+            }
+        }
     }
 }

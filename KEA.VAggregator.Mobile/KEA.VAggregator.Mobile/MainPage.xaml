@@ -7,9 +7,24 @@
     <Grid BackgroundColor="Black" >
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="100" />
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+
+        <ScrollView Grid.Column="0">
+            <CollectionView x:Name="categoryPanel" Margin="0,20"
+                    SelectionMode="Single" SelectionChanged="categoryChanged">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}" FontSize="Medium" TextColor="Silver"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!--<StackLayout x:Name="categoryPanel" Orientation="Vertical" HorizontalOptions="End"/>-->
+        </ScrollView>
 
         <ScrollView Margin="0" Grid.Column="1">
             <local:WrapLayout x:Name="wrapPanel"  Background="Black" ColumnSpacing="0" RowSpacing="10"/>
