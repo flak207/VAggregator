@@ -8,7 +8,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.CommunityToolkit.Markup;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
@@ -19,9 +21,22 @@ namespace KEA.VAggregator.Mobile
         private IVideoService _videoService => DependencyService.Get<IVideoService>();
         private int _page = 1;
 
+        public ICommand LongPressCommand { get; }
+
         public MainPage()
         {
             InitializeComponent();
+
+            LongPressCommand = CommandFactory.Create(async (object parameter) =>
+            {
+                Video video = parameter as Video;
+                //DisplayAlert($"{video.Name} clicked", null, "OK");
+                if (video != null)
+                {
+                    await _videoService.FillVideoUrlsAndInfo(video);
+                    LoadVideos(video.RelatedVideos);
+                }
+            });
         }
 
         protected override async void OnAppearing()

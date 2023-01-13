@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:KEA.VAggregator.Mobile"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="KEA.VAggregator.Mobile.MainPage"
+             x:Name="rootPage"
              BackgroundColor="Aqua">
     <Grid BackgroundColor="Black" >
 
@@ -40,7 +42,8 @@
             <local:WrapItemsControl x:Name="wrapPanel" ColumnSpacing="10" RowSpacing="10" Background="Black" >
                 <local:WrapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid  xct:TouchEffect.LongPressCommand="{Binding Source={x:Reference Name=rootPage}, Path=LongPressCommand}" 
+                               xct:TouchEffect.LongPressDuration="2000" xct:TouchEffect.LongPressCommandParameter="{Binding}">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="videoDoubleTapped" NumberOfTapsRequired="2" />
                             </Grid.GestureRecognizers>
