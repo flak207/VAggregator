@@ -18,6 +18,6 @@ namespace KEA.VAggregator.StdLib.Services
 
         //Dictionary<string, string> GetVideoQualityUrls(Video video);
 
-        Task FillVideoUrlsAndInfo(Video video);
+        Task FillVideoUrlsAndInfo(Video video, VideoQuality videoQuality = VideoQuality._480p);
     }
 }

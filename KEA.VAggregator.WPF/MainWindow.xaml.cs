@@ -106,9 +106,9 @@ namespace KEA.VAggregator.WPF
 
         private void wrapPanel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
-            if (selectedItem != null)
-                searchInput.Text = selectedItem.Name;
+            //WebItem selectedItem = wrapPanel.SelectedItem as WebItem;
+            //if (selectedItem != null)
+            //    searchInput.Text = selectedItem.Name;
         }
 
         private async void searchButton_Click(object sender, RoutedEventArgs e)
@@ -138,7 +138,7 @@ namespace KEA.VAggregator.WPF
             if (selectedItem as Video != null && e.ClickCount > 1)
             {
                 Video video = selectedItem as Video;
-                await _videoService.FillVideoUrlsAndInfo(video);
+                await _videoService.FillVideoUrlsAndInfo(video, VideoQuality._1080p);
 
                 if (video.PlayLink != null)
                 {
