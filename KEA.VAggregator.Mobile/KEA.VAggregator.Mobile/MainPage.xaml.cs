@@ -44,13 +44,17 @@ namespace KEA.VAggregator.Mobile
             base.OnAppearing();
             Shell.SetTabBarIsVisible(this, false);
             Shell.SetNavBarIsVisible(this, false);
-
-            var categories = await _videoService.GetCategories();
-            categories = categories.OrderBy(c => c.Name);
-            categoryPanel.ItemsSource = categories;
-
-            var items = await _videoService.GetVideos();
-            LoadVideos(items);
+            if (categoryPanel.ItemsSource == null)
+            {
+                var categories = await _videoService.GetCategories();
+                categories = categories.OrderBy(c => c.Name);
+                categoryPanel.ItemsSource = categories;
+            }
+            if (wrapPanel.ItemsSource == null)
+            {
+                var items = await _videoService.GetVideos();
+                LoadVideos(items);
+            }
         }
 
         public void LoadVideos(IEnumerable<Video> videos)
