@@ -20,7 +20,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <Entry x:Name="searchInput" Placeholder="Search..." Margin="5,0,0,0" TextChanged="searchInput_TextChanged" />
+            <Entry x:Name="searchInput" Placeholder="Search..." Margin="5,0,0,0" Completed="searchInput_Completed"  />
             <Button x:Name="searchButton" Grid.Row="1" Clicked="searchButton_Clicked" Text="GO" Margin="0,-10,0,0"/>
             
             <ScrollView Grid.Row="2" >
@@ -45,7 +45,7 @@
                         <Grid  xct:TouchEffect.LongPressCommand="{Binding Source={x:Reference Name=rootPage}, Path=LongPressCommand}" 
                                xct:TouchEffect.LongPressDuration="2000" xct:TouchEffect.LongPressCommandParameter="{Binding}">
                             <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="videoDoubleTapped" NumberOfTapsRequired="2" />
+                                <TapGestureRecognizer Tapped="videoDoubleTapped" NumberOfTapsRequired="1" />
                             </Grid.GestureRecognizers>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>

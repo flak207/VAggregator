@@ -99,9 +99,10 @@ namespace KEA.VAggregator.Mobile
             LoadVideos(items);
         }
 
-        private void searchInput_TextChanged(object sender, TextChangedEventArgs e)
+        private void searchInput_Completed(object sender, EventArgs e)
         {
             _page = 1;
+            searchButton_Clicked(sender, e);
         }
     }
 }
