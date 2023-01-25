@@ -8,10 +8,17 @@
         <xct:MediaElement x:Name="mediaElement"
                 Aspect="AspectFill"
                 ShowsPlaybackControls="True"/>
-        <control:ProgressRing x:Name="progressBar" VerticalOptions="Center" HorizontalOptions="Center" 
+        <!--<control:ProgressRing x:Name="progressBar" VerticalOptions="Center" HorizontalOptions="Center" 
                               WidthRequest="200" HeightRequest="200"  RingThickness="50" Progress="0"
-                              RingProgressColor="SkyBlue" RingBaseColor="AliceBlue"/>
-        
-        <!--<ProgressBar x:Name="progressBar" VerticalOptions="Center" HorizontalOptions="Center" />-->
+                              RingProgressColor="SkyBlue" RingBaseColor="AliceBlue"/>-->
+
+        <Grid x:Name="progressGrid"  VerticalOptions="Center" HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Image x:Name="progressImage" WidthRequest="427" HeightRequest="240" IsAnimationPlaying="True"/>
+            <ProgressBar x:Name="progressBar" Grid.Row="1" WidthRequest="427" HeightRequest="50"   ScaleY="5"  ProgressColor="Blue"  VerticalOptions="End"/>
+        </Grid>
     </Grid>
 </ContentPage>

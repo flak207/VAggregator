@@ -44,6 +44,8 @@ namespace KEA.VAggregator.Mobile
             base.OnAppearing();
             Shell.SetTabBarIsVisible(this, false);
             Shell.SetNavBarIsVisible(this, false);
+
+
             if (categoryPanel.ItemsSource == null)
             {
                 var categories = await _videoService.GetCategories();
@@ -83,7 +85,8 @@ namespace KEA.VAggregator.Mobile
             if (video != null)
             {
                 await _videoService.FillVideoUrlsAndInfo(video);
-                await Shell.Current.GoToAsync($"{nameof(VideoPage)}?{nameof(VideoPage.PlayLink)}={video.PlayLink}");
+                await Navigation.PushAsync(new VideoPage(video));
+                //await Shell.Current.GoToAsync ($"{nameof(VideoPage)}?{nameof(VideoPage.ImageUrl)}={video.ImageUrl}&{nameof(VideoPage.PlayLink)}={video.PlayLink}");
             }
         }
 
