@@ -17,7 +17,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Image x:Name="progressImage" WidthRequest="427" HeightRequest="240" IsAnimationPlaying="True"/>
+            <Image x:Name="progressImage" WidthRequest="427" HeightRequest="240" IsAnimationPlaying="True" Opacity="1"/>
             <ProgressBar x:Name="progressBar" Grid.Row="1" WidthRequest="427" HeightRequest="50"   ScaleY="5"  ProgressColor="Blue"  VerticalOptions="End"/>
         </Grid>
     </Grid>

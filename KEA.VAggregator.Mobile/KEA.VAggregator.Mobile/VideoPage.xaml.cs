@@ -49,31 +49,44 @@ namespace KEA.VAggregator.Mobile
                 if (_video.ScreenshotUrls.Count > 1)
                 {
                     _timerAlive = true;
-                    Device.StartTimer(TimeSpan.FromSeconds(2), OnTimerTick);
+                    DisplayProgess();
                 }
+                await UpdateProgressBar(1.00, 20000);
             }
-            await UpdateProgressBar(1.00, 14000);
         }
 
-        private bool OnTimerTick()
+        private async void DisplayProgess()
         {
             try
             {
-                if (_video.ScreenshotUrls.Count > _imageIndex)
+                while (_timerAlive)
                 {
-                    // progressImage.FadeTo(0.0, 500, Easing.Linear);
+                    uint transitionTime = 1000;
+                    double displacement = progressImage.Width / 2;
+
+                    await Task.WhenAll(
+                       progressImage.FadeTo(0.2, transitionTime, Easing.Linear),
+                       progressImage.TranslateTo(-displacement, progressImage.Y, transitionTime, Easing.CubicInOut));
+                    // Changes image source.
                     progressImage.Source = _video.ScreenshotUrls[_imageIndex];
-                    // progressImage.FadeTo(1.0, 500, Easing.Linear);
+                    await progressImage.TranslateTo(displacement, 0, 0);
+                    await Task.WhenAll(
+                        progressImage.FadeTo(1, transitionTime, Easing.Linear),
+                        progressImage.TranslateTo(0, progressImage.Y, transitionTime, Easing.CubicInOut));
+
+                    //await progressImage.FadeTo(0.5, 1000, Easing.Linear);
+                    //progressImage.Source = _video.ScreenshotUrls[_imageIndex];
+                    //await progressImage.FadeTo(1.0, 1000, Easing.Linear);
 
                     int newIndex = _imageIndex + 1;
                     _imageIndex = newIndex >= _video.ScreenshotUrls.Count ? 0 : newIndex;
+                    //await Task.Delay(1000);
                 }
             }
             catch (Exception)
             {
                 _timerAlive = false;
             }
-            return _timerAlive;
         }
 
         async Task UpdateProgressBar(double progress, uint time)
