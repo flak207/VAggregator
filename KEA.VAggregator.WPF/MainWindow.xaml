@@ -81,6 +81,13 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel x:Name="itemPanel" Orientation="Vertical" MouseLeftButtonDown="itemPanel_MouseLeftButtonDown">
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem x:Name="miCopyName" Tag="{Binding Name}" Click="miCopyName_Click" Header="Copy Name"/>
+                                    <MenuItem x:Name="miApp" Tag="{Binding}" Click="miApp_Click" Header="Open In App"/>
+                                    <MenuItem x:Name="miBrowser" Tag="{Binding}" Click="miBrowser_Click" Header="Open In Browser"/>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
                             <Grid>
                                 <Border Height="148" Width="261" BorderThickness="1" BorderBrush="Gray">
                                     <Image Height="148" Width="261" Source="{Binding ImageUrl}" 
@@ -94,13 +101,8 @@
                             <TextBlock Margin="0,1,0,4" Width="261" HorizontalAlignment="Stretch"
                                    Text="{Binding Name}" ToolTip="{Binding Name}" FontSize="14"
                                    TextAlignment="Center" TextTrimming="CharacterEllipsis">
-                                <TextBlock.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem x:Name="miCopyName" Tag="{Binding Name}" Click="miCopyName_Click" Header="Copy Name"/>
-                                    </ContextMenu>
-                                </TextBlock.ContextMenu>
                             </TextBlock>
-                        </StackPanel>
+                        </StackPanel >
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

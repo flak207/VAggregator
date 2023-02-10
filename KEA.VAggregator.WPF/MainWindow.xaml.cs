@@ -67,7 +67,7 @@ namespace KEA.VAggregator.WPF
         public async Task SearchVideos()
         {
             string searchTxt = searchInput.Text;
-            Category category =  categoriesList.SelectedItem as Category;
+            Category category = categoriesList.SelectedItem as Category;
 
             var items = string.IsNullOrEmpty(searchTxt) ? await _videoService.GetVideos(category, this.Page)
                 : await _videoService.SearchVideos(searchTxt, (VideoQuality)cmbVideoQuality.SelectedItem, this.Count);
@@ -128,7 +128,46 @@ namespace KEA.VAggregator.WPF
             Item item = menuItem?.DataContext as Item;
             if (item != null)
             {
+                searchInput.Text = item.Name;
                 Clipboard.SetText(item.Name, TextDataFormat.Text);
+            }
+        }
+
+        private async void miApp_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            Video video = menuItem?.DataContext as Video;
+            if (video != null)
+            {
+                await _videoService.FillVideoUrlsAndInfo(video, VideoQuality._1080p);
+                try
+                {
+                    var url = video.QualityLinks.Values.LastOrDefault();
+                    Process.Start(@"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe", url);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex); ;
+                }
+            }
+        }
+
+        private  void miBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            Video video = menuItem?.DataContext as Video;
+            if (video != null)
+            {
+               // await _videoService.FillVideoUrlsAndInfo(video, VideoQuality._1080p);
+                try
+                {
+                    var url = video.QualityLinks.Values.LastOrDefault();
+                    Process.Start(@"firefox", video.TargetUrl);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex); ;
+                }
             }
         }
 
